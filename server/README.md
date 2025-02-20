@@ -10,7 +10,7 @@ Ensure you have the following installed:
 ## Cloning the Repository
 ```bash
 git clone <REPO_URL>
-cd BSE25-28CSBA/server
+cd BSE25-28-CSBA/server
 ```
 
 ## Setting Up a Virtual Environment

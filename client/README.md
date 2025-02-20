@@ -15,7 +15,7 @@ Make sure you have the following installed before proceeding:
 ### 1. Clone the Repository
 ```sh
 git clone <REPO_URL>
-cd BSE25-28CSBA/client
+cd BSE25-28-CSBA/client
 ```
 
 ### 2. Install Dependencies
