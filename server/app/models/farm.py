@@ -6,6 +6,7 @@ class Farm(models.Model):
     farm_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="farms")
     name = models.CharField(max_length=255)
+    size = models.FloatField(null=True)
     location = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
