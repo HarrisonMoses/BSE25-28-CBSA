@@ -1,12 +1,14 @@
-
-import './App.css'
+// import Login from "./pages/login"
+import Register from "./pages/Register"
+// import './App.css'
 
 function App() {
 
   return (
-    <>    
-      <h1 className='text-green-500'>Happy Coding</h1>  
-    </>
+    <div>    
+      {/* <Login/>  */}
+      <Register/>
+    </div>
   )
 }
 
