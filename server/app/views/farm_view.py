@@ -19,3 +19,8 @@ class FarmViewSet(ModelViewSet):
         return {'user_id': self.kwargs['user_pk']}
 
 
+class FarmsViewSet(ModelViewSet):
+    queryset = Farm.objects.all()
+    serializer_class = FarmSerializer
+
+    
