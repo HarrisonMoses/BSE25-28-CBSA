@@ -4,7 +4,7 @@ import issue from "../assets/issue.jpg";
 function Login() {
   const [formData, setFormData] = useState({
     name: "",
-    email:" ",
+    email: " ",
     password: "",
   });
 
@@ -21,7 +21,7 @@ function Login() {
   };
   return (
     <div className="h-screen  flex  justify-center items-center bg-gray-100">
-      <div className="bg-white p-4 flex gap-3 rounded-lg shadow-2xl ">
+      <div className="bg-green-500 p-4 flex gap-3 rounded-lg shadow-2xl ">
         <div className="">
           <h2 className="text-left mb-4 font-bold text-blue-400">Login</h2>
           <form onSubmit={handleSubmit}>
@@ -85,7 +85,7 @@ function Login() {
           </div>
         </div>
         <div className="hidden md:block bg-green-300 rounded-lg overflow-hidden">
-          <img src={issue} alt="issue" className="h-full w-80 grayscale-100"/>
+          <img src={issue} alt="issue" className="h-full w-80 grayscale-100" />
         </div>
       </div>
     </div>
