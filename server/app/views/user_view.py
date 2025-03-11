@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import  GenericViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
 from ..models import Farmer
 from ..serializers import FarmerSerializer
@@ -9,6 +10,7 @@ from ..serializers import FarmerSerializer
 class FarmerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = Farmer.objects.all()
     serializer_class = FarmerSerializer
+    permission_classes = [IsAuthenticated]
 
     @action(detail= False ,methods=['GET','PUT'])
     def me(self,request):
