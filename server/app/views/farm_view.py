@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from ..models import Farm
-from app.serializers import FarmSerializer
+from ..serializers import FarmSerializer
 
 
 class FarmViewSet(ModelViewSet):
