@@ -1,10 +1,10 @@
 from django.db import models
-from .user import User
+from .user import Farmer
 
 # Create your models here.
 class Farm(models.Model):
     farm_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="farms")
+    farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name="farm")
     name = models.CharField(max_length=255)
     size = models.FloatField(null=True)
     location = models.TextField()

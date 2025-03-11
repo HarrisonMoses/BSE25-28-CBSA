@@ -1,4 +1,4 @@
-from .user import User
+from .user import Farmer
 from .farm import Farm
 from .crop import Crop
 from .device import Device

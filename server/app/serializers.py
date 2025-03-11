@@ -1,18 +1,20 @@
 from rest_framework import serializers
+from .models import Farm, Farmer,FarmCrop, Crop ,Device
 
-from .models import Farm, User,FarmCrop, Crop ,Device
+class FarmerSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(read_only= True)
 
-class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['user_id', 'name', 'email', 'password', 'created_at']
+        model = Farmer
+        fields = ['id', 'user_id','phone','created_at']
+        
 
 
 
 class FarmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Farm
-        fields = ['farm_id','user', 'name', 'location','size', 'created_at']
+        fields = ['farm_id', 'name', 'location','size', 'created_at']
 
     def create(self, validated_data):
         user_id = self.context['user_id']
@@ -47,4 +49,5 @@ class DeviceSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         farm_id = self.context['farm_id']
         return Device.objects.create(farm_id=farm_id, **validated_data)
-        
+    
+
