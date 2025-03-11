@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import issue from '../assets/issue.jpg'
+import issue from "../assets/issue.jpg";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ function Register() {
     console.log(formData);
   };
   return (
-    <div className="h-screen  flex  justify-center items-center bg-gray-100">
+    <div className="h-screen bg-lime-600 flex  justify-center items-center bg-gray-100">
       <div className="bg-white p-4 flex gap-4 rounded-lg shadow-2xl ">
         <div>
           <h2 className="text-left mb-4 font-bold text-blue-400">Register</h2>
@@ -78,7 +78,7 @@ function Register() {
                 required
               />
             </div>
-            
+
             <button
               type="submit"
               class="text-white mt-4 mb-4 bg-green-700 w-79  hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm  p-2.5 text-center "
