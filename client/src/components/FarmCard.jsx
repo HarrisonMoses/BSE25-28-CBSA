@@ -1,59 +1,64 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
-const FarmCard = ({ farmname, location, size, crops, status, func }) => {
+const FarmCard = ({ farmName, location, size, crops, status }) => {
   // Determine status color based on the status value
-  const statusClass =
-    status === "Active"
-      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-      : "bg-yellow-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Active":
+        return "bg-green-100 text-green-800";
+      case "Maintenance":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-red-100 text-red-800";
+    }
+  };
 
   return (
-    <div className="max-w p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-      <div className="flex flex-row gap-12 justify-between items-center">
-        <a href="#">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {farmname} Farm
-          </h5>
-        </a>
-        <p
-          className={`h-max text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ${statusClass}`}
+    <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm w-full">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-semibold text-gray-900">{farmName} Farm</h3>
+        <span
+          className={`px-2.5 py-0.5 rounded-md text-xs font-medium ${getStatusClass(
+            status
+          )}`}
         >
           {status}
-        </p>
+        </span>
       </div>
-      <p className="mb-3 font-normal text-gray-30">Location: {location}</p>
-      <div className="flex gap-20">
+      <p className="text-gray-600 mb-3">Location: {location}</p>
+      <div className="flex justify-between mb-4">
         <div>
-          <p>
-            Size: <span>{size}</span>
+          <p className="text-gray-600">
+            Size: <span className="font-medium">{size} acres</span>
           </p>
         </div>
         <div>
-          <p>
-            Crops: <span>{crops}</span>
+          <p className="text-gray-600">
+            Crops: <span className="font-medium">{crops}</span>
           </p>
         </div>
       </div>
-
-      <div className="m-2 flex justify-end" onClick={func}>
-        <p className="inline-flex items-center text-sm font-medium text-black hover:underline">
-          View details
+      <div className="flex justify-end">
+        <Link
+          to={`/farms/${farmName.toLowerCase()}`}
+          className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >
+          View Details
           <svg
-            className="rtl:rotate-180 w-3.5 h-3.5 ml-2"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4 ml-1"
             fill="none"
-            viewBox="0 0 14 10"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 5h12m0 0L9 1m4 4L9 9"
-            />
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            ></path>
           </svg>
-        </p>
+        </Link>
       </div>
     </div>
   );

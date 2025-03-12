@@ -1,17 +1,28 @@
-import React from "react";
+"use client";
 
-const Button = ({ name, action }) => {
+const Button = ({ name, action, icon, variant = "primary" }) => {
+  const getButtonClasses = () => {
+    switch (variant) {
+      case "primary":
+        return "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-300";
+      case "secondary":
+        return "text-white bg-gray-700 hover:bg-gray-800 focus:ring-gray-300";
+      case "success":
+        return "text-white bg-green-600 hover:bg-green-700 focus:ring-green-300";
+      default:
+        return "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-300";
+    }
+  };
+
   return (
-    <div className="mt-2">
-      <button
-        onClick={action}
-        type="button"
-        className="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 me-2 mb-2"
-      >
-        <span className="mr-2 text-xl">+</span>
-        {name}
-      </button>
-    </div>
+    <button
+      onClick={action}
+      type="button"
+      className={`flex items-center font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-4 ${getButtonClasses()}`}
+    >
+      {icon && <span className="mr-2">{icon}</span>}
+      {name}
+    </button>
   );
 };
 

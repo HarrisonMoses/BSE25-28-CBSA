@@ -1,34 +1,51 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import {createBrowserRouter, RouterProvider } from "react-router-dom"
-import './index.css'
-import App from './App.jsx'
-import Dashboard from './pages/Dashboard.jsx'
-import Register from './pages/Register.jsx'
-import Login from './pages/login.jsx'
-import NotFound from './pages/NotFound.jsx'
-import DeviceMangement from './pages/DeviceMangement.jsx'
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+import Dashboard from "./pages/Dashboard.jsx";
+import Register from "./pages/Register.jsx";
+import Login from "./pages/login.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import DeviceManagement from "./pages/DeviceMangement.jsx";
+import FarmDetails from "./pages/FarmDetails.jsx";
+import RegisterDevice from "./pages/RegisterDevice.jsx";
+import AIAdvisor from "./pages/AIAdvisor.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard/>,
-    errorElement: <NotFound/>,
-    children:[]
+    element: <Dashboard />,
+    errorElement: <NotFound />,
   },
   {
     path: "login",
-    element: <Login/>
+    element: <Login />,
   },
   {
-    path:"register",
-    element: <Register/>
+    path: "register",
+    element: <Register />,
   },
   {
-    path:"devices",
-    element:<DeviceMangement/>
-  }
+    path: "devices",
+    element: <DeviceManagement />,
+  },
+  {
+    path: "devices/:deviceId",
+    element: <DeviceManagement />,
+  },
+  {
+    path: "register-device",
+    element: <RegisterDevice />,
+  },
+  {
+    path: "farms/:farmId",
+    element: <FarmDetails />,
+  },
+  {
+    path: "advisor",
+    element: <AIAdvisor />,
+  },
 ]);
 
-createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router}/>
-)
+createRoot(document.getElementById("root")).render(
+  <RouterProvider router={router} />
+);
