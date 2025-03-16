@@ -8,6 +8,7 @@ import Register from './pages/Register.jsx'
 import Login from './pages/login.jsx'
 import NotFound from './pages/NotFound.jsx'
 import DeviceMangement from './pages/DeviceMangement.jsx'
+import Sidebar from './components/Sidebar.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
