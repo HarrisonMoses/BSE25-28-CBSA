@@ -1,5 +1,5 @@
 from django.db import models
-from .sensor_data import SensorData
+from .SensorDataModel import SensorData
 
 class CropRecommendation(models.Model):
     id = models.AutoField(primary_key=True)

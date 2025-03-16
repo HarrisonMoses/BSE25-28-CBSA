@@ -1,6 +1,6 @@
 from django.db import models
-from .farm import Farm
-from .crop import Crop
+from .FarmModel import Farm
+from .CropModel import Crop
 
 class FarmCrop(models.Model):
     id = models.AutoField(primary_key=True)

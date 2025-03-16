@@ -1,5 +1,5 @@
 from django.db import models
-from .device import Device
+from .DeviceModel import Device
 
 class SensorData(models.Model):
     id = models.AutoField(primary_key=True)

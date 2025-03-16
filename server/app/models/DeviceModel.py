@@ -1,5 +1,5 @@
 from django.db import models
-from .farm import Farm  
+from .FarmModel import Farm  
 
 class Device(models.Model):
     device_id = models.AutoField(primary_key=True)

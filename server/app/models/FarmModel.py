@@ -1,5 +1,5 @@
 from django.db import models
-from .user import Farmer
+from .FarmerModel import Farmer
 
 # Create your models here.
 class Farm(models.Model):
@@ -10,5 +10,5 @@ class Farm(models.Model):
     location = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
