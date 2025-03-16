@@ -1,15 +1,7 @@
-// import Login from "./pages/login"
-import Layout from "./components/layout"
-import Dashboard from "./pages/Dashboard"
-import Register from "./pages/Register"
-// import './App.css'
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-
-  return (
-    <Dashboard/>
-
-  )
+  return <Dashboard />;
 }
 
-export default App
+export default App;

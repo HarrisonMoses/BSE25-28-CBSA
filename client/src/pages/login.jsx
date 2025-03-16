@@ -1,92 +1,144 @@
-import React, { useState } from "react";
-import issue from "../assets/issue.jpg";
+"use client";
+
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Logo from "../assets/logo";
 
 function Login() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: " ",
+    email: "",
     password: "",
+    rememberMe: false,
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    // In a real app, you would handle authentication here
   };
+
   return (
-    <div className="h-screen  flex  justify-center items-center bg-gray-100">
-      <div className="bg-green-500 p-4 flex gap-3 rounded-lg shadow-2xl ">
-        <div className="">
-          <h2 className="text-left mb-4 font-bold text-blue-400">Login</h2>
-          <form onSubmit={handleSubmit}>
-            <div class="mb-5">
-              <label
-                for="email"
-                class="block mb-2 text-sm text-left font-medium text-gray-600"
-              >
-                User Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                value={formData.email}
-                placeholder="Enter your email"
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm text-left  font-medium text-gray-900"
-              >
-                Password
-              </label>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <div className="flex justify-center mb-6">
+          <Logo className="w-12 h-12" />
+        </div>
+
+        <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">
+          Sign in to your account
+        </h2>
+        <p className="text-center text-gray-600 mb-6">Welcome back</p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block mb-2 text-sm font-medium text-gray-700"
+            >
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+              placeholder="name@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block mb-2 text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
+            <div className="relative">
               <input
                 type="password"
                 id="password"
                 name="password"
-                className="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
-            </div>
-            <button
-              type="submit"
-              class="text-white mt-4 mb-4 bg-green-700 w-79  hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm  p-2.5 text-center "
-            >
-              L O G I N
-            </button>
-          </form>
-          <div>
-            <div class="flex items-start mb-5">
-              <label
-                for="terms"
-                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-500"
               >
-                You dont have an account ?{" "}
-                <a
-                  href="#"
-                  class="text-blue-600 hover:underline dark:text-blue-500"
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  Register
-                </a>
-              </label>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  ></path>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  ></path>
+                </svg>
+              </button>
             </div>
           </div>
-        </div>
-        <div className="hidden md:block bg-green-300 rounded-lg overflow-hidden">
-          <img src={issue} alt="issue" className="h-full w-80 grayscale-100" />
-        </div>
+
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <input
+                id="rememberMe"
+                name="rememberMe"
+                type="checkbox"
+                className="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
+                checked={formData.rememberMe}
+                onChange={handleChange}
+              />
+              <label
+                htmlFor="rememberMe"
+                className="ml-2 text-sm text-gray-600"
+              >
+                Remember me
+              </label>
+            </div>
+            <a href="#" className="text-sm text-indigo-600 hover:underline">
+              Forgot password?
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            Sign in
+          </button>
+        </form>
+
+        <p className="mt-4 text-sm text-center text-gray-600">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-indigo-600 hover:underline">
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   );
