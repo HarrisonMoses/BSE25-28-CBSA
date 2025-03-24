@@ -9,6 +9,7 @@ import DeviceManagement from "./pages/DeviceMangement.jsx";
 import FarmDetails from "./pages/FarmDetails.jsx";
 import RegisterDevice from "./pages/RegisterDevice.jsx";
 import AIAdvisor from "./pages/AIAdvisor.jsx";
+import { UserProvider } from "./context/context.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,5 +48,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <UserProvider>
+    <RouterProvider router={router} />
+  </UserProvider>
 );

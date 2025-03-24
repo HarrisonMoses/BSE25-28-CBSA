@@ -50,7 +50,7 @@ const AIAdvisor = () => {
       }
 
       setChatHistory((prev) => [...prev, aiMessage])
-    }, 1000)
+    }, 5000)
   }
 
   return (
