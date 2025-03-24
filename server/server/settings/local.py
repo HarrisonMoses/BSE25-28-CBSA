@@ -1,3 +1,3 @@
 from .base import *
 
-DEBUG = True
+DEBUG = Config("DEBUG", default=True, cast=bool)

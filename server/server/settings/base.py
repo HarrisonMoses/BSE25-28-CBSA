@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import  timedelta 
+from decouple import Config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=1&9n&04^qd(#1+-s1e6%r-^f_x6#p8ht(t@(dv+$k42gq%dgz'
+SECRET_KEY = Config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = Config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "corsheaders",
     # 'django_filters',
     "debug_toolbar",
     'rest_framework',
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -84,11 +87,11 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cbsa_fp',
-        'USER': 'postgres',
-        'PASSWORD': 'root1234',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': Config("DB_NAME"),
+        'USER': Config("DB_USER"),
+        'PASSWORD': Config("DB_PASSWORD"),
+        'HOST': Config("DB_HOST"),
+        'PORT': Config("DB_PORT"),
     }
 }
 
@@ -159,6 +162,11 @@ DJOSER = {
 }
 INTERNAL_IPS = [
     "127.0.0.1",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    
 ]
 
 #eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0MTM1MTIyNSwiaWF0IjoxNzQxMjY0ODI1LCJqdGkiOiJhOTFhOThhYjYwMGI0NDE4YWIzZTY3N2EzNjNhZGE1MiIsInVzZXJfaWQiOjF9.1Br3fL5tIsrxYCpcv5hvG0rMfG6t2ynh3gaKwJFhcXY
