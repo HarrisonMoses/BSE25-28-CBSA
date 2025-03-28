@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import  timedelta 
-from decouple import Config
+from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = Config("DEBUG", default=False, cast=bool)
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -65,7 +66,7 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,11 +88,11 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': Config("DB_NAME"),
-        'USER': Config("DB_USER"),
-        'PASSWORD': Config("DB_PASSWORD"),
-        'HOST': Config("DB_HOST"),
-        'PORT': Config("DB_PORT"),
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("WSL_HOST"),
+        'PORT': config("DB_PORT"),
     }
 }
 
@@ -169,5 +170,13 @@ CORS_ALLOWED_ORIGINS = [
     
 ]
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "localhost"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+EMAIL_PORT = 2525
+DEFAULT_FROM_EMAIL = "admin@localhost"
+
 #eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0MTM1MTIyNSwiaWF0IjoxNzQxMjY0ODI1LCJqdGkiOiJhOTFhOThhYjYwMGI0NDE4YWIzZTY3N2EzNjNhZGE1MiIsInVzZXJfaWQiOjF9.1Br3fL5tIsrxYCpcv5hvG0rMfG6t2ynh3gaKwJFhcXY
 
+CELERY_BROKER_URL = "redis://localhost:6379/1"

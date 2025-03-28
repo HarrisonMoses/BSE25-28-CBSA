@@ -3,3 +3,4 @@ from .FarmerView import FarmerViewSet
 from .FarmCropView import FarmCropViewSet
 from .DeviceView import DeviceViewSet
 from .CropView import CropViewSet
+from .email_view import send_email_view
