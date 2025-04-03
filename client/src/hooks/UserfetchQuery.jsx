@@ -125,3 +125,13 @@ export const Current_user = async () => {
     const res = await api.get('auth/users/me/');
     return res.data;
 }
+
+// Farm end-points
+export const Create_farm = async (credentials) => {
+  const res = await api.post('api/farms/', credentials);
+  return res.data;
+}
+export const Delete_farm = async (id) => {
+  const res = await api.delete(`api/farms/${id}/`);
+  return res.data;
+}
