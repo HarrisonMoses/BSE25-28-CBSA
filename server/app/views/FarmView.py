@@ -13,7 +13,7 @@ from ..serializers import FarmSerializer
 
 class FarmViewSet(ModelViewSet):
     serializer_class = FarmSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """Filter farms by the authenticated user."""

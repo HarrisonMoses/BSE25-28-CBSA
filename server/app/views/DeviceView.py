@@ -14,3 +14,10 @@ class DeviceViewSet(ModelViewSet):
     
     def get_serializer_context(self):
         return {'farm_id': self.kwargs['farm_pk']}
+
+
+class DevicesViewSet(ModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+
+   

@@ -21,6 +21,7 @@ django-templated-mail = "*"
 django-celery = "*"
 redis = "*"
 celery = "*"
+openai-agents = "*"
 
 [dev-packages]
 
