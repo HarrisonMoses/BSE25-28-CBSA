@@ -1,6 +1,6 @@
 from core.serializers import UserSerializer
 from rest_framework import serializers
-from .models import Farm, Farmer,FarmCrop, Crop ,Device
+from .models import *
 
 class FarmerSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -23,7 +23,7 @@ class DeviceSerializer(serializers.ModelSerializer):
 class CropSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crop
-        fields = ['crop_id', 'crop','max_ideal_nitrogen', 'min_ideal_nitrogen','min_ideal_phosphorous', 'min_ideal_potassium', 'max_ideal_phosphorous','max_ideal_potassium']
+        fields = '__all__'
 
 
 class FarmCropSerializer(serializers.ModelSerializer):
@@ -61,17 +61,24 @@ class FarmSerializer(serializers.ModelSerializer):
         return representation
 
     def create(self, validated_data):
-        # Retrieve the farmer_id from the serializer context
         farmer_id = self.context.get('farmer_id')
         if not farmer_id:
             raise serializers.ValidationError("Farmer ID is required to create a farm.")
-        
-        # Create the Farm instance with the provided farmer_id
         return Farm.objects.create(farmer_id=farmer_id, **validated_data)
 
 
 
 
+class SensorDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SensorData
+        fields = ['id', 'moisture_level', 'temperature', 'nitrogen', 'phosphorous', 'potassium', 'farm_uuid', 'created_at']
+
+    def create(self, validated_data):
+        device_id = self.context['device_id']
+        if not device_id:
+            raise serializers.ValidationError("Device ID is required to create sensor data.")
+        return SensorData.objects.create(device_id=device_id, **validated_data)
 
 
 

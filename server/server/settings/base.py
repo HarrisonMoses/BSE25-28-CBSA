@@ -180,3 +180,15 @@ DEFAULT_FROM_EMAIL = "admin@localhost"
 #eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0MTM1MTIyNSwiaWF0IjoxNzQxMjY0ODI1LCJqdGkiOiJhOTFhOThhYjYwMGI0NDE4YWIzZTY3N2EzNjNhZGE1MiIsInVzZXJfaWQiOjF9.1Br3fL5tIsrxYCpcv5hvG0rMfG6t2ynh3gaKwJFhcXY
 
 CELERY_BROKER_URL = "redis://localhost:6379/1"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+# CELERY_BEAT_SCHEDULE = {
+#     'recommender': {
+#         'task': 'app.services.recomender.crop_recommender',
+#         'args': ["message"],
+#         'schedule':5,  # Every minute
+#     },
+# }
+
+
+#openAi
+OPENAI_API_KEY = config("OPENAI_API_KEY")
