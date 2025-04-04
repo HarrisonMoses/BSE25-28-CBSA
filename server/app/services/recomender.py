@@ -5,15 +5,15 @@ from celery import shared_task
 from rest_framework.response import Response
 from rest_framework import status
 from pydantic import BaseModel, Field
-from asgiref.sync import sync_to_async
+from agents import Agent,function_tool,Runner
+import json
 import os
 
 from ..models import SensorData
 
 # Set OpenAI API key
-
-
-client = OpenAI(api_key = settings.OPENAI_API_KEY)
+openai_api_key = os.getenv('OPENAI_API_KEY', settings.OPENAI_API_KEY)
+os.environ["OPENAI_API_KEY"] = openai_api_key
 
 class Crop(BaseModel):
     name: str = Field(..., description="Name of the crop")
@@ -26,48 +26,39 @@ class CropList(BaseModel):
 
 
 # Function to get the latest soil data for a farm
-def get_recent_farm_soil_data(farm_id):
+@function_tool
+def get_recent_farm_soil_data(farm_id:int)->dict:
     latest_data = SensorData.objects.filter(farm_uuid=farm_id).order_by('-timestamp').first()
     if not latest_data:
-        return None
-    return latest_data
-
-
-# OpenAI function calling tool definition
-tools = [{
-    "type": "function",
-    "function": {
-        "name": "get_recent_farm_soil_data",
-        "description": "Get the recent soil data for the farm",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "farm_id": {"type": "number"},
-            },
-            "required": ["farm_id"],
-            "additionalProperties": False
-        },
-        "strict": True,
+        return {"error": "No soil data found for the given farm."}
+    soil_data = {
+        "moisture": latest_data.moisture_level,
+        "temperature": latest_data.temperature,
+        "nitrogen": latest_data.nitrogen,
+        "phosphorus": latest_data.phosphorous,
+        "potassium": latest_data.potassium,
     }
-      
-}]
+    return soil_data
+
+
+def agent_func(farm_id:int):
+    agent = Agent(
+        name="SoilCropRecommender",
+        instructions=f"Recommend the best crops to grow based on the soil data from the farm with an id of {farm_id}.",
+        model="o3-mini",
+        output_type=CropList,
+        tools=[get_recent_farm_soil_data],
+    )
+    return agent
 
 
 # Celery task for recommending crops
 # @shared_task
-async def crop_recommender(farm_id) -> list[Crop]:
-    input_messages = [
-        {"role": "user", "content": f"Recommend crops for farm {farm_id} based on its latest soil data."}
-    ]
+async def crop_recommender(farm_id:int):
+    response = await Runner.run(agent_func(farm_id),"what is the crop recommendation for the farm?")
+    return response.final_output
+    
+    
 
-    # OpenAI API Call
-    response = await client.beta.chat.completions.parse(
-        model="gpt-4o",
-        messages=input_messages,
-        tools=tools,
-        temperature=0.7,
-    )
 
-    # Extract recommendations from response
-    recommendations = response.choices[0].message["content"]
-    return recommendations
+    
