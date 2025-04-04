@@ -82,8 +82,6 @@ api.interceptors.response.use(
 api.interceptors.request.use(
 
     async (config) => {
-        
-
 
         const unprotectedEndpoints = [
             "auth/users/", // Registration endpoint
