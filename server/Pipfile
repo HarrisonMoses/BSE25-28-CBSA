@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 asgiref = "==3.8.1"
-django = "==5.1.6"
+django = "==4.2.20"
 djangorestframework = "==3.15.2"
 python-dotenv = "==1.0.1"
 sqlparse = "==0.5.3"

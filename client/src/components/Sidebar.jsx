@@ -13,7 +13,7 @@ const Sidebar = () => {
       <div className="h-full px-3 py-4 overflow-y-auto bg-white border-r">
         <div className="flex items-center mb-5 pl-2.5">
           <Logo />
-          <span className="ml-2 text-xl font-semibold text-indigo-600">AgriSense</span>
+          <span className="ml-2 text-xl font-semibold text-emerald-700">AgriSense</span>
         </div>
         <ul className="space-y-2 font-medium">
           <li>
