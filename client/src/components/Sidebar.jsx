@@ -1,25 +1,37 @@
-import { Link, useLocation } from "react-router-dom"
-import Logo from "../assets/logo"
+"use client";
+
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import Logo from "../assets/logo";
 
 const Sidebar = () => {
-  const location = useLocation()
+  const location = useLocation();
+  const [farmsDropdownOpen, setFarmsDropdownOpen] = useState(false);
 
   const isActive = (path) => {
-    return location.pathname === path ? "bg-gray-100" : ""
-  }
+    return location.pathname === path ? "bg-gray-100" : "";
+  };
+
+  const toggleFarmsDropdown = () => {
+    setFarmsDropdownOpen(!farmsDropdownOpen);
+  };
 
   return (
     <aside className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0">
       <div className="h-full px-3 py-4 overflow-y-auto bg-white border-r">
         <div className="flex items-center mb-5 pl-2.5">
           <Logo />
-          <span className="ml-2 text-xl font-semibold text-emerald-700">AgriSense</span>
+          <span className="ml-2 text-xl font-semibold text-indigo-600">
+            AgriSense
+          </span>
         </div>
         <ul className="space-y-2 font-medium">
           <li>
             <Link
               to="/"
-              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive("/")}`}
+              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive(
+                "/"
+              )}`}
             >
               <svg
                 className="w-5 h-5 text-gray-500"
@@ -33,9 +45,12 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/farms"
-              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive("/farms")}`}
+            <button
+              type="button"
+              className={`flex items-center w-full p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${
+                location.pathname.includes("/farms") ? "bg-gray-100" : ""
+              }`}
+              onClick={toggleFarmsDropdown}
             >
               <svg
                 className="w-5 h-5 text-gray-500"
@@ -45,13 +60,62 @@ const Sidebar = () => {
               >
                 <path d="M480-400 40-640l440-240 440 240-440 240Zm0 160L63-467l84-46 333 182 333-182 84 46-417 227Zm0 160L63-307l84-46 333 182 333-182 84 46L480-80Zm0-411 273-149-273-149-273 149 273 149Zm0-149Z" />
               </svg>
-              <span className="ms-3">Farms</span>
-            </Link>
+              <span className="flex-1 ms-3 text-left">Farms</span>
+              <svg
+                className={`w-3 h-3 transition-transform ${
+                  farmsDropdownOpen ? "rotate-180" : ""
+                }`}
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 1 4 4 4-4"
+                />
+              </svg>
+            </button>
+            <ul
+              className={`py-2 space-y-2 ${
+                farmsDropdownOpen ? "block" : "hidden"
+              }`}
+            >
+              <li>
+                <Link
+                  to="/farms/kayunga"
+                  className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                >
+                  Kayunga Farm
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/farms/masaka"
+                  className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                >
+                  Masaka Farm
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/farms/mubende"
+                  className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                >
+                  Mubende Farm
+                </Link>
+              </li>
+            </ul>
           </li>
           <li>
             <Link
               to="/devices"
-              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive("/devices")}`}
+              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive(
+                "/devices"
+              )}`}
             >
               <svg
                 className="w-5 h-5 text-gray-500"
@@ -67,7 +131,9 @@ const Sidebar = () => {
           <li>
             <Link
               to="/advisor"
-              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive("/advisor")}`}
+              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive(
+                "/advisor"
+              )}`}
             >
               <svg
                 className="w-5 h-5 text-gray-500"
@@ -82,24 +148,33 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/settings"
-              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive("/settings")}`}
+              to="/notifications"
+              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive(
+                "/notifications"
+              )}`}
             >
               <svg
                 className="w-5 h-5 text-gray-500"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
               </svg>
-              <span className="ms-3">Settings</span>
+              <span className="ms-3">Notifications</span>
             </Link>
           </li>
           <li>
             <Link
               to="/login"
-              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive("/login")}`}
+              className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive(
+                "/login"
+              )}`}
             >
               <svg
                 className="w-5 h-5 text-gray-500"
@@ -115,8 +190,7 @@ const Sidebar = () => {
         </ul>
       </div>
     </aside>
-  )
-}
+  );
+};
 
-export default Sidebar
-
+export default Sidebar;
