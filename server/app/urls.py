@@ -16,6 +16,9 @@ farm_router = routers.NestedDefaultRouter(router, 'farm', lookup='farm')
 farm_router.register('farmcrop', FarmCropViewSet, basename='farm-farmcrop')
 farm_router.register('device', DeviceViewSet, basename='farm-device')
 
+farmer_router =routers.NestedDefaultRouter(router, 'farmer', lookup='farmer')
+farm_router.register('farm',FarmViewSet, basename='create-farm')
+
 device_router = routers.NestedDefaultRouter(router, 'devices', lookup='devices')
 device_router.register("data", SensorDataViewSet, basename='device-sensor-data')
 
