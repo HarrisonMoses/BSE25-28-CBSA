@@ -1,4 +1,5 @@
 import { useState, createContext } from "react";
+import PropTypes from "prop-types";
 
 const useContextData = {
   id: "",
@@ -10,11 +11,11 @@ const useContextData = {
 
 export const UserContext = createContext(useContextData);
 
-export const UserProvider = ({ children }) => { 
-    const [user, setUser] = useState(useContextData);
-    return (
-        <UserContext.Provider value={{ user, setUser }}>
-            {children}
-        </UserContext.Provider>
-    );
-}
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(useContextData);
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};

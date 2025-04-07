@@ -110,6 +110,7 @@ api.interceptors.request.use(
   }
 );
 
+// User end-points
 export const Login_Auth = async(credentials) => {
     const res = await auth.post('auth/jwt/create', credentials);
     return res.data;
@@ -133,3 +134,32 @@ export const Delete_farm = async (id) => {
   const res = await api.delete(`api/farms/${id}/`);
   return res.data;
 }
+export const Get_farm_details = async () => {
+  const res = await api.get("api/farm/");
+  return res.data;
+};
+export const Get_farmer_profile = async () => {
+  const res = await api.get("api/farmer/");
+  return res.data;
+};
+
+// Crops endpoints
+export const Add_crop_to_farm = async (farmId, cropData) => {
+  const res = await api.post(`api/farm/${farmId}/farmcrop/`, cropData);
+  return res.data;
+};
+export const Delete_crop_from_farm = async (farmId, cropId) => {
+  const res = await api.delete(`api/farm/${farmId}/farmcrop/${cropId}/`);
+  return res.data;
+};
+
+// Device endpoints
+export const Add_device_to_farm = async (farmId, deviceData) => {
+  const res = await api.post(`api/farm/${farmId}/device/`, deviceData);
+  return res.data;
+};
+export const Delete_device_from_farm = async (farmId, deviceId) => {
+  const res = await api.delete(`api/farm/${farmId}/device/${deviceId}/`);
+  return res.data;
+};
+

@@ -16,4 +16,4 @@ class Crop(models.Model):
     humidity_max = models.FloatField(null=True)
 
     def __str__(self):
-        return self.name
+        return self.crop
