@@ -45,6 +45,7 @@ chrome-user-data
 *.sublime-workspace
 .idea
 *.iml
+.env*
 .vscode
 *.swp
 *.swo

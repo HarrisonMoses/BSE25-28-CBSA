@@ -1,6 +1,9 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import{store} from "./store/configureAppStore.jsx";
+import { Provider } from "react-redux";
+
 import Dashboard from "./pages/Dashboard.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/login.jsx";
@@ -10,6 +13,7 @@ import FarmDetails from "./pages/FarmDetails.jsx";
 import RegisterDevice from "./pages/RegisterDevice.jsx";
 import AIAdvisor from "./pages/AIAdvisor.jsx";
 import { UserProvider } from "./context/context.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -48,7 +52,9 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
   <UserProvider>
     <RouterProvider router={router} />
   </UserProvider>
+  </Provider>
 );

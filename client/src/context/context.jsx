@@ -1,5 +1,4 @@
 import { useState, createContext } from "react";
-import propTypes from "propTypes";
 
 const useContextData = {
   id: "",
@@ -9,7 +8,7 @@ const useContextData = {
   username: "",
 };
 
-export const UserContext = craeteContext(useContextData);
+export const UserContext = createContext(useContextData);
 
 export const UserProvider = ({ children }) => { 
     const [user, setUser] = useState(useContextData);
