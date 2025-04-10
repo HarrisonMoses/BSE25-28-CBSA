@@ -1,4 +1,3 @@
-"use client";
 
 const Button = ({ name, action, icon, variant = "primary" }) => {
   const getButtonClasses = () => {

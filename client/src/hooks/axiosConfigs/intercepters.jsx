@@ -1,23 +1,26 @@
 import axios from "axios";
-import { setUser, setLoading, setError } from "../../store/user";
-import { useDispatch } from "react-redux";
-
 const baseUrl = import.meta.env.VITE_API_BASEURL;
 
 export const api = axios.create({
   baseURL: baseUrl,
+  headers: {
+    "Content-Type": "application/json", 
+  },
 });
 
 export const auth = axios.create({
   baseURL: baseUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 export const setTokens = (accessToken, refreshToken) => {
-  localStorage.setItem("acessToken", accessToken);
+  localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
 };
 export const removeTokens = () => {
-  localStorage.removeItem("acessToken");
+  localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
 };
 
@@ -96,21 +99,15 @@ api.interceptors.response.use(
 
 api.interceptors.request.use(
   (config) => {
-    const publicEndpoints = ["auth/jwt/create/", "auth/users/"];
-    if (publicEndpoints.some((endpoint) => config.url.includes(endpoint))) {
-      return config;
-    }
+    // const publicEndpoints = ["auth/jwt/create/", "auth/users/"];
+    // if (publicEndpoints.some((endpoint) => config.url.includes(endpoint))) {
+    //   return config;
+    // }
 
     const token = localStorage.getItem("accessToken");
-    console.log(token);
     if (token) {
       config.headers.Authorization = `JWT ${token}`;
     }
-
-    if (!["get", "head", "options"].includes(config.method.toLowerCase())) {
-      config.headers["X-CSRFToken"] = getCsrfToken();
-    }
-
     return config;
   },
   (error) => Promise.reject(error)

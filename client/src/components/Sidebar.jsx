@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/logo";
+import { useAuth } from "../store/hooks/useAuth";
 
-const Sidebar = () => {
+const Sidebar = ({children}) => {
   const location = useLocation();
+  const { logout } = useAuth();
   const [farmsDropdownOpen, setFarmsDropdownOpen] = useState(false);
 
   const isActive = (path) => {
@@ -17,6 +19,7 @@ const Sidebar = () => {
   };
 
   return (
+    <div className="flex flex-col sm:flex-row">
     <aside className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0">
       <div className="h-full px-3 py-4 overflow-y-auto bg-white border-r">
         <div className="flex items-center mb-5 pl-2.5">
@@ -191,6 +194,7 @@ const Sidebar = () => {
               className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ${isActive(
                 "/login"
               )}`}
+              onClick={()=>{logout()}} // Call the logout function when the link is clicked
             >
               <svg
                 className="w-5 h-5 text-gray-500"
@@ -205,7 +209,11 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
-    </aside>
+      </aside>
+      <section className="bg-gray-50 h-screen w-screen ">
+        {children}
+      </section>
+      </div>
   );
 };
 

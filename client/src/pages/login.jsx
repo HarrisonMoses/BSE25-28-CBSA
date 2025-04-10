@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 
 import Logo from "../assets/logo";
-import { Current_user, Login_Auth } from "../hooks/auth";
-import { setUser } from "../store/user";
+import { useAuth } from "../store/hooks/useAuth";
+import { loginUser } from "../store/slices/auth";
 
 function Login() {
   const [error, setError] = useState(null);
+  const {login,loadUser ,authError,authLoading,isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -24,18 +26,14 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await Login_Auth(formData);
-      if (res.status === 200) {
-        const user = await Current_user();
-        dispatch(setUser(user));
-        window.location.href = "/";
-      } else {
-        setError("Invalid username or password");
-      }
-    } catch (error) {
-      throw error;
+    await login(formData);
+    if (isAuthenticated) {
+      loadUser();
+      navigate("/");
+    } else {
+      setError("Invalid username or password");
     }
+    
   };
 
   return (
@@ -49,7 +47,11 @@ function Login() {
           Sign in to your account
         </h2>
         <p className="text-center text-gray-600 mb-6">Welcome back</p>
-
+        {authError && (
+          <div className="mb-4 text-red-600 text-sm">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
@@ -141,8 +143,9 @@ function Login() {
           <button
             type="submit"
             className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            disabled={authLoading}
           >
-            Sign in
+            {authLoading ? "Loading..." : "Sign in"}
           </button>
         </form>
 

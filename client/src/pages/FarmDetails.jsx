@@ -1,52 +1,63 @@
 "use client"
 import { useParams } from "react-router-dom"
+import { useFarm } from "../store/hooks/useFarm"
+
 import Sidebar from "../components/Sidebar"
 import Header from "../components/Header"
 import MetricCard from "../components/MetricCard"
 import RecommendationCard from "../components/RecommendationCard"
 import ChatBox from "../components/ChatBox"
+import { useEffect,useState } from "react"
 
 const FarmDetails = () => {
   const { farmId } = useParams()
+  const [farmData, setFarmData] = useState(null)
 
-  // This would come from an API in a real application
-  const farmData = {
-    name: "Kayunga Farm",
-    metrics: {
-      soilMoisture: 45,
-      temperature: 23,
-      nitrogen: 85,
-      phosphorus: 48,
-      potassium: 65,
-    },
-    recommendations: [
-      {
-        type: "warning",
-        title: "Immediate Action Required",
-        description: "Soil moisture levels are below optimal. Consider increasing irrigation frequency.",
-      },
-      {
-        type: "info",
-        title: "Fertilizer Schedule",
-        description: "Apply nitrogen-rich fertilizer within the next 3 days for optimal growth.",
-      },
-      {
-        type: "task",
-        title: "Upcoming Tasks",
-        description: "Plan for crop rotation in the southern field within 2 weeks.",
-      },
-    ],
+  const { farms, loading, error, getFarmDetails } = useFarm()
+
+  const farmSoilData = async () => { 
+    try {
+      const res = await api.get(`api/farms/${farmId}/data/`);
+      
+    } catch (error) {
+      
+    }
+
+
   }
 
+  
+  
+
+  // This would come from an API in a real application
+  
+  const recommendations = [
+    {
+      type: "warning",
+      title: "Immediate Action Required",
+      description: "Soil moisture levels are below optimal. Consider increasing irrigation frequency.",
+    },
+    {
+      type: "info",
+      title: "Fertilizer Schedule",
+      description: "Apply nitrogen-rich fertilizer within the next 3 days for optimal growth.",
+    },
+    {
+      type: "task",
+      title: "Upcoming Tasks",
+      description: "Plan for crop rotation in the southern field within 2 weeks.",
+    },
+  ];
+
   return (
+      <Sidebar >
     <div className="bg-gray-50 min-h-screen">
-      <Sidebar />
 
       <div className="p-4 sm:ml-64">
         <Header />
 
         <div className="mb-6 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">{farmData.name} Dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{} Dashboard</h1>
           <button className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:bg-gray-800">
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm8 6a6 6 0 100-12 6 6 0 000 12zm1-5a1 1 0 11-2 0 1 1 0 012 0zm-3-4a1 1 0 00-1 1v3a1 1 0 002 0V8a1 1 0 00-1-1z"></path>
@@ -69,7 +80,7 @@ const FarmDetails = () => {
               </svg>
             }
             label="Soil Moisture"
-            value={farmData.metrics.soilMoisture}
+            value='hello'
             unit="%"
             color="blue"
           />
@@ -84,7 +95,7 @@ const FarmDetails = () => {
               </svg>
             }
             label="Temperature"
-            value={farmData.metrics.temperature}
+            value='hello'
             unit="°C"
             color="red"
           />
@@ -99,7 +110,7 @@ const FarmDetails = () => {
               </svg>
             }
             label="Nitrogen"
-            value={farmData.metrics.nitrogen}
+            value='hello'
             unit="mg/kg"
             color="yellow"
           />
@@ -114,7 +125,7 @@ const FarmDetails = () => {
               </svg>
             }
             label="Phosphorus"
-            value={farmData.metrics.phosphorus}
+            value= 'hello'
             unit="mg/kg"
             color="yellow"
           />
@@ -129,7 +140,7 @@ const FarmDetails = () => {
               </svg>
             }
             label="Potassium"
-            value={farmData.metrics.potassium}
+            value='hello'
             unit="mg/kg"
             color="yellow"
           />
@@ -154,7 +165,7 @@ const FarmDetails = () => {
         {/* Recommendations */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4">Recommendations</h2>
-          {farmData.recommendations.map((rec, index) => (
+          {farmData?.recommendations.map((rec, index) => (
             <RecommendationCard key={index} type={rec.type} title={rec.title} description={rec.description} />
           ))}
         </div>
@@ -165,8 +176,9 @@ const FarmDetails = () => {
           initialMessage="Hello! I'm your AI Soil Advisor. How can I help you today with your soil management?"
         />
       </div>
-    </div>
-  )
+      </div>
+      </Sidebar >
+  );
 }
 
 export default FarmDetails

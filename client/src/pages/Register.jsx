@@ -1,13 +1,12 @@
-"use client";
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo";
-import { Register_Auth } from "../hooks/auth";
+import { useAuth } from "../store/hooks/useAuth";
 
 function Register() {
   const [error, setError] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const { register, authError, authLoading } = useAuth();
+  const navigate = useNavigate();
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [formData, setFormData] = useState({
@@ -28,17 +27,14 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== confirmPassword) {
-      alert("Passwords do not match!");
+     alert("Passwords do not match");
       return;
     }
-    try {
-      const res = await Register_Auth(formData);
-      if (res.status === 201) {
-        window.location.href = "/login";
-      }
-    } catch (error) {
-      setError(error.response?.data || "Registration failed");
+    await register(formData);
+    if(!authError) {
+      navigate("/login");
     }
+    
   };
 
   return (
@@ -224,8 +220,9 @@ function Register() {
           <button
             type="submit"
             className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            disabled={authLoading}
           >
-            Create Account
+            {authLoading ? "Creating..." : "Create Account"}
           </button>
         </form>
         <p className="mt-4 text-sm text-center text-gray-600">
