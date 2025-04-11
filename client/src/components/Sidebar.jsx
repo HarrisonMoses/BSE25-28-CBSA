@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import Logo from "../assets/logo";
 import { useAuth } from "../store/hooks/useAuth";
 import { useFarm } from "../store/hooks/useFarm";
 
 const Sidebar = ({children}) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { logout } = useAuth();
   const {farms} = useFarm()
   const [farmsDropdownOpen, setFarmsDropdownOpen] = useState(false);
@@ -109,7 +110,7 @@ const Sidebar = ({children}) => {
                 {farms?.map((farm) => (
                   <li key={farm.farm_id} className="first-letter:capitalize">
                     <Link
-                      to={`farms/${farm.farm_id}`}
+                      to={`/farms/${farm.farm_id}`}
                       className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 first-letter:capitalize"
                     >
                       {farm.name} Farm
