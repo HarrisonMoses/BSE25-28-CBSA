@@ -16,30 +16,7 @@ const Dashboard = () => {
   if (error) return <div>Error: {error.message}</div>;
 
 
-  // const farms = [
-  //   {
-  //     name: "Kayunga",
-  //     location: "Kayunga District, Uganda",
-  //     size: "50",
-  //     crops: "Coffee, Maize",
-  //     status: "Active",
-  //   },
-  //   {
-  //     name: "Masaka",
-  //     location: "Masaka District, Uganda",
-  //     size: "35",
-  //     crops: "Banana, Cassava",
-  //     status: "Active",
-  //   },
-  //   {
-  //     name: "Mubende",
-  //     location: "Mubende District, Uganda",
-  //     size: "40",
-  //     crops: "Coffee, Vanilla",
-  //     status: "Maintenance",
-  //   },
-  // ];
-
+  
   const handleAddFarm = () => {
     console.log("Add new farm clicked");
     // In a real app, you would navigate to a form or open a modal
@@ -70,7 +47,7 @@ const Dashboard = () => {
               location={farm.location}
               size={farm.size}
               crops={farm.crops?.map(crop => crop.name).join(", ")}
-              id = {farm.farm_id}
+              farm_id = {farm.farm_id}
             />
           ))}
         </div>

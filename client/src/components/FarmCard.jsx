@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const FarmCard = ({id, farmName, location, size, crops, status }) => {
+const FarmCard = ({farm_id, farmName, location, size, crops, status }) => {
   // Determine status color based on the status value
   const getStatusClass = (status) => {
     switch (status) {
@@ -40,7 +40,7 @@ const FarmCard = ({id, farmName, location, size, crops, status }) => {
       </div>
       <div className="flex justify-end">
         <Link
-          to={`/farms/${id}`}  
+          to={`/farms/${farm_id}`}  
           className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
         >
           View Details

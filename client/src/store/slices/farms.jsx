@@ -1,6 +1,7 @@
 // features/farm/farmSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../hooks/axiosConfigs/intercepters";
+import { startTransition } from "react";
 
 // Async thunks
 export const createFarm = createAsyncThunk(
@@ -62,7 +63,7 @@ const initialState = {
 const farmSlice = createSlice({
   name: "farm",
   initialState,
-  
+
   reducers: {
     clearFarmError: (state) => {
       state.error = null;
@@ -70,9 +71,9 @@ const farmSlice = createSlice({
     resetCreateStatus: (state) => {
       state.createStatus = "idle";
     },
-     
+
     getFarmsDetails: (state, action) => {
-      state.farms = state.farms.filter((farm) => farm.id !== action.payload.id);
+      state.farms = state.farms.find((farm)=>{farm.farm_id === action.payload})
     },
   },
   extraReducers: (builder) => {

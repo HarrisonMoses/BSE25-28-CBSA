@@ -45,7 +45,7 @@ const router = createBrowserRouter([
     element: <RegisterDevice />,
   },
   {
-    path: "farms/:farmId",
+    path: "farms/:farm_id",
     element: <FarmDetails />,
   },
   {
