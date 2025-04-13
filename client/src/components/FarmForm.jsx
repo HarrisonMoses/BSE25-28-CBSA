@@ -12,6 +12,7 @@ const FarmForm = ({ onClose }) => {
     size: "",
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,11 +25,19 @@ const FarmForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+
     try {
-      await createFarm(formData);
+      const result = await createFarm(formData);
+
+      if (result.error) {
+        throw new Error(result.error.message || "Failed to create farm");
+      }
+
       onClose();
     } catch (error) {
       console.error("Error creating farm:", error);
+      setError(error.message || "Failed to create farm. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -36,6 +45,12 @@ const FarmForm = ({ onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+          {error}
+        </div>
+      )}
+
       <div className="mb-4">
         <label
           htmlFor="name"

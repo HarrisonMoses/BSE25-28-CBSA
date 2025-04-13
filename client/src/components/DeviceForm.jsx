@@ -1,50 +1,47 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import Button from "./Button";
-import { useSelector } from "react-redux";
-import { register_device_to_farm } from "../hooks/devices";
+import { useState } from "react"
+import Button from "./Button"
+import { useSelector } from "react-redux"
+import { register_device_to_farm } from "../hooks/devices"
 
 const DeviceForm = ({ onClose }) => {
-  const farms = useSelector((state) => state.farm.farms);
+  const farms = useSelector((state) => state.farm.farms)
   const [formData, setFormData] = useState({
     name: "",
     device_id: "",
     farm_id: "",
-  });
-  const [loading, setLoading] = useState(false);
+  })
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
     try {
       await register_device_to_farm(formData.farm_id, {
         name: formData.name,
         device_id: formData.device_id,
-      });
-      onClose();
+      })
+      onClose()
     } catch (error) {
-      console.error("Error registering device:", error);
+      console.error("Error registering device:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="block mb-2 text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
           Device Name
         </label>
         <input
@@ -60,10 +57,7 @@ const DeviceForm = ({ onClose }) => {
       </div>
 
       <div className="mb-4">
-        <label
-          htmlFor="device_id"
-          className="block mb-2 text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="device_id" className="block mb-2 text-sm font-medium text-gray-700">
           Device ID
         </label>
         <input
@@ -79,10 +73,7 @@ const DeviceForm = ({ onClose }) => {
       </div>
 
       <div className="mb-6">
-        <label
-          htmlFor="farm_id"
-          className="block mb-2 text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="farm_id" className="block mb-2 text-sm font-medium text-gray-700">
           Select Farm
         </label>
         <select
@@ -125,7 +116,7 @@ const DeviceForm = ({ onClose }) => {
         />
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default DeviceForm;
+export default DeviceForm

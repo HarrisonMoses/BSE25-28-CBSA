@@ -10,7 +10,7 @@ export const createFarm = createAsyncThunk(
       const response = await api.post("api/farms/", farmData);
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
@@ -22,7 +22,7 @@ export const deleteFarm = createAsyncThunk(
       await api.delete(`api/farms/${farmId}/`);
       return farmId;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
@@ -34,7 +34,7 @@ export const fetchFarms = createAsyncThunk(
       const response = await api.get("api/farms/");
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
@@ -46,7 +46,7 @@ export const fetchFarmerProfile = createAsyncThunk(
       const response = await api.get("api/farmer/");
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
@@ -56,6 +56,8 @@ const initialState = {
   farmerProfile: null,
   loading: false,
   error: null,
+  createStatus: "idle",
+  deleteStatus: "idle",
 };
 
 const farmSlice = createSlice({
@@ -82,10 +84,15 @@ const farmSlice = createSlice({
       .addCase(createFarm.pending, (state) => {
         state.createStatus = "loading";
         state.loading = true;
+        state.error = null;
       })
       .addCase(createFarm.fulfilled, (state, action) => {
         state.createStatus = "succeeded";
         state.loading = false;
+        // Check if farms is an array before pushing
+        if (!Array.isArray(state.farms)) {
+          state.farms = [];
+        }
         state.farms.push(action.payload);
       })
       .addCase(createFarm.rejected, (state, action) => {
@@ -98,11 +105,17 @@ const farmSlice = createSlice({
       .addCase(deleteFarm.pending, (state) => {
         state.deleteStatus = "loading";
         state.loading = true;
+        state.error = null;
       })
       .addCase(deleteFarm.fulfilled, (state, action) => {
         state.deleteStatus = "succeeded";
         state.loading = false;
-        state.farms = state.farms.filter((farm) => farm.id !== action.payload);
+        // Check if farms is an array before filtering
+        if (Array.isArray(state.farms)) {
+          state.farms = state.farms.filter(
+            (farm) => farm.farm_id !== action.payload
+          );
+        }
       })
       .addCase(deleteFarm.rejected, (state, action) => {
         state.deleteStatus = "failed";
@@ -113,6 +126,7 @@ const farmSlice = createSlice({
       // Fetch Farms
       .addCase(fetchFarms.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchFarms.fulfilled, (state, action) => {
         state.loading = false;

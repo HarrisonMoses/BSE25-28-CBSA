@@ -1,4 +1,3 @@
-
 import { useSelector, useDispatch } from "react-redux";
 import {
   createFarm,
@@ -17,7 +16,7 @@ export const useFarm = () => {
     farms: state.farms,
     loading: state.loading,
     error: state.error,
-    
+
     createFarm: (data) => dispatch(createFarm(data)),
     deleteFarm: (id) => dispatch(deleteFarm(id)),
     getFarms: () => dispatch(fetchFarms()),
