@@ -44,8 +44,8 @@ const DeviceManagement = () => {
   };
 
   return (
+      <Sidebar >
     <div className="bg-gray-50 min-h-screen">
-      <Sidebar />
 
       <div className="p-4 sm:ml-64">
         <Header />
@@ -58,7 +58,8 @@ const DeviceManagement = () => {
         <DeviceTable title="Masaka Farm Devices" devices={masakaDevices} />
         <DeviceTable title="Mubende Farm Devices" devices={mubendeDevices} />
       </div>
-    </div>
+      </div>
+      </Sidebar>
   );
 };
 

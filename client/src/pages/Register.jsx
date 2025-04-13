@@ -1,18 +1,19 @@
-"use client";
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo";
+import { useAuth } from "../store/hooks/useAuth";
 
 function Register() {
+  const [error, setError] = useState(null);
+  const { register, authError, authLoading } = useAuth();
+  const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    organizationName: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
-    agreeTerms: false,
+    username: " ",
+    email: " ",
+    password: " ",
+    phone: " ",
   });
 
   const handleChange = (e) => {
@@ -23,10 +24,17 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    // In a real app, you would handle registration here
+    if (formData.password !== confirmPassword) {
+     alert("Passwords do not match");
+      return;
+    }
+    await register(formData);
+    if(!authError) {
+      navigate("/login");
+    }
+    
   };
 
   return (
@@ -43,27 +51,25 @@ function Register() {
           Create Your Account
         </h3>
         <p className="text-center text-gray-600 mb-6">Join us to get started</p>
-
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="fullName"
               className="block mb-2 text-sm font-medium text-gray-700"
             >
-              Full Name
+              Username
             </label>
             <input
               type="text"
-              id="fullName"
-              name="fullName"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-              placeholder="Enter your full name"
-              value={formData.fullName}
+              id="username"
+              name="username"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-amber-500 block w-full p-2.5"
+              placeholder="@Eric123"
+              value={formData.username}
               onChange={handleChange}
               required
             />
           </div>
-
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -82,26 +88,6 @@ function Register() {
               required
             />
           </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="organizationName"
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
-              Organization Name
-            </label>
-            <input
-              type="text"
-              id="organizationName"
-              name="organizationName"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-              placeholder="Choose a username"
-              value={formData.organizationName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
           <div className="mb-4">
             <label
               htmlFor="phoneNumber"
@@ -111,16 +97,15 @@ function Register() {
             </label>
             <input
               type="tel"
-              id="phoneNumber"
-              name="phoneNumber"
+              id="phone"
+              name="phone"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
               placeholder="Enter your phone number"
-              value={formData.phoneNumber}
+              value={formData.phone}
               onChange={handleChange}
               required
             />
           </div>
-
           <div className="mb-4">
             <label
               htmlFor="password"
@@ -166,7 +151,6 @@ function Register() {
               </button>
             </div>
           </div>
-
           <div className="mb-4">
             <label
               htmlFor="confirmPassword"
@@ -182,7 +166,7 @@ function Register() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                 placeholder="Re-enter your password"
                 value={formData.confirmPassword}
-                onChange={handleChange}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
               <button
@@ -213,7 +197,7 @@ function Register() {
             </div>
           </div>
 
-          <div className="flex items-start mb-6">
+          {/* <div className="flex items-start mb-6">
             <div className="flex items-center h-5">
               <input
                 id="agreeTerms"
@@ -231,16 +215,16 @@ function Register() {
                 Terms & Conditions
               </a>
             </label>
-          </div>
+          </div> */}
 
           <button
             type="submit"
             className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            disabled={authLoading}
           >
-            Create Account
+            {authLoading ? "Creating..." : "Create Account"}
           </button>
         </form>
-
         <p className="mt-4 text-sm text-center text-gray-600">
           Already have an account?{" "}
           <Link to="/login" className="text-indigo-600 hover:underline">

@@ -16,6 +16,8 @@ import Notifications from "./pages/Notifications.jsx";
 import { UserProvider } from "./context/context.jsx";
 
 
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
     element: <RegisterDevice />,
   },
   {
-    path: "farms/:farmId",
+    path: "farms/:farm_id",
     element: <FarmDetails />,
   },
   {
@@ -58,8 +60,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-  <UserProvider>
     <RouterProvider router={router} />
-  </UserProvider>
   </Provider>
 );
