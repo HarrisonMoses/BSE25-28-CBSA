@@ -1,14 +1,13 @@
 // features/farm/farmSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../hooks/axiosConfigs/intercepters";
-import { startTransition } from "react";
 
 // Async thunks
 export const createFarm = createAsyncThunk(
   "farm/create",
   async (farmData, { rejectWithValue }) => {
     try {
-      const response = await api.post("api/farms/", credentials);
+      const response = await api.post("api/farms/", farmData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -32,7 +31,7 @@ export const fetchFarms = createAsyncThunk(
   "farm/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response =  await api.get("api/farms/");
+      const response = await api.get("api/farms/");
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -53,12 +52,11 @@ export const fetchFarmerProfile = createAsyncThunk(
 );
 
 const initialState = {
-    farms: [],
-    farmerProfile: null,
-    loading: false,
-    error: null,
-    
-  }
+  farms: [],
+  farmerProfile: null,
+  loading: false,
+  error: null,
+};
 
 const farmSlice = createSlice({
   name: "farm",
@@ -73,7 +71,9 @@ const farmSlice = createSlice({
     },
 
     getFarmsDetails: (state, action) => {
-      state.farms = state.farms.find((farm)=>{farm.farm_id === action.payload})
+      state.farms = state.farms.find((farm) => {
+        farm.farm_id === action.payload;
+      });
     },
   },
   extraReducers: (builder) => {

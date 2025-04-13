@@ -1,8 +1,9 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import{store} from "./store/configureAppStore.jsx";
+import { store } from "./store/configureAppStore.jsx";
 import { Provider } from "react-redux";
+import { UserProvider } from "./context/context.jsx";
 
 import Dashboard from "./pages/Dashboard.jsx";
 import Register from "./pages/Register.jsx";
@@ -13,10 +14,6 @@ import FarmDetails from "./pages/FarmDetails.jsx";
 import RegisterDevice from "./pages/RegisterDevice.jsx";
 import AIAdvisor from "./pages/AIAdvisor.jsx";
 import Notifications from "./pages/Notifications.jsx";
-import { UserProvider } from "./context/context.jsx";
-
-
-
 
 const router = createBrowserRouter([
   {
@@ -60,6 +57,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </Provider>
 );

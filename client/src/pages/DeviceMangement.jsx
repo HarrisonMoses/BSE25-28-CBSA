@@ -1,10 +1,21 @@
 "use client";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import DeviceTable from "../components/DeviceTable";
 import AddButton from "../components/AddButton";
+import Modal from "../components/Modal";
+import DeviceForm from "../components/DeviceForm";
+import { useFarm } from "../store/hooks/useFarm";
 
 const DeviceManagement = () => {
+  const { getFarms } = useFarm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    getFarms(); // Load farms for the device form dropdown
+  }, []);
+
   const kayungaDevices = [
     {
       name: "Soil Moisture Sensor",
@@ -39,27 +50,34 @@ const DeviceManagement = () => {
   ];
 
   const handleAddDevice = () => {
-    console.log("Add new device clicked");
-    // In a real app, you would navigate to a form or open a modal
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
-      <Sidebar >
-    <div className="bg-gray-50 min-h-screen">
+    <Sidebar>
+      <div className="bg-gray-50 min-h-screen">
+        <div className="p-4 sm:ml-64">
+          <Header />
 
-      <div className="p-4 sm:ml-64">
-        <Header />
+          <div className="mb-6">
+            <AddButton text="Add New Device" onClick={handleAddDevice} />
+          </div>
 
-        <div className="mb-6">
-          <AddButton text="Add New Device" onClick={handleAddDevice} />
+          <DeviceTable title="Kayunga Farm Devices" devices={kayungaDevices} />
+          <DeviceTable title="Masaka Farm Devices" devices={masakaDevices} />
+          <DeviceTable title="Mubende Farm Devices" devices={mubendeDevices} />
         </div>
+      </div>
 
-        <DeviceTable title="Kayunga Farm Devices" devices={kayungaDevices} />
-        <DeviceTable title="Masaka Farm Devices" devices={masakaDevices} />
-        <DeviceTable title="Mubende Farm Devices" devices={mubendeDevices} />
-      </div>
-      </div>
-      </Sidebar>
+      {/* Add Device Modal */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="Add New Device">
+        <DeviceForm onClose={closeModal} />
+      </Modal>
+    </Sidebar>
   );
 };
 
