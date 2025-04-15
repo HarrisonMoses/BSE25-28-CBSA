@@ -6,10 +6,11 @@ import { useEffect } from "react";
 import {useFarm} from "../store/hooks/useFarm";
 
 const Dashboard = () => {
-  const { farms, loading, error, getFarms } = useFarm();
+  const { farms, loading, error, getFarms,load } = useFarm();
 
   useEffect(() => {
     getFarms();
+    
   }, []);
 
   if (loading) return <div>Loading farms...</div>;
@@ -35,14 +36,15 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading && (
-          <div className="col-span-1 md:col-span-2 lg:col-span-3 flex items-center justify-center h-full">
+          <div className="flex items-center justify-center">
               <p className="text-gray-500">Loading farms...</p>
             </div>
           )}
           {
             farms?.map((farm) => (
             <FarmCard
-              key={farm.farm_id}
+                key={farm.farm_id}
+                status ='Active'
               farmName={farm.name}
               location={farm.location}
               size={farm.size}

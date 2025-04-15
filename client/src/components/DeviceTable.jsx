@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom"
 
-const DeviceTable = ({ title, devices }) => {
-  // Status badge styling
-  const getStatusBadge = (status) => {
-    switch (status) {
-      case "Online":
+
+const DeviceTable = ({ farmName, devices}) => {
+  
+  
+  const getStatusBadge = (status,) => {
+    switch (String(status)) {
+      case "true":
       case "Active":
         return (
           <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-md">{status}</span>
@@ -13,7 +15,7 @@ const DeviceTable = ({ title, devices }) => {
         return (
           <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-md">{status}</span>
         )
-      case "Offline":
+      case "false":
       case "Inactive":
         return <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-md">{status}</span>
       default:
@@ -23,8 +25,10 @@ const DeviceTable = ({ title, devices }) => {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-6">
+      
+
       <div className="p-4 border-b">
-        <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-xl font-semibold text-gray-900">{farmName}</h2>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500">
@@ -39,26 +43,25 @@ const DeviceTable = ({ title, devices }) => {
               <th scope="col" className="px-6 py-3">
                 Status
               </th>
-              <th scope="col" className="px-6 py-3">
-                Battery
-              </th>
+
               <th scope="col" className="px-6 py-3">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {devices.map((device, index) => (
+            {devices?.map((device, index) => (
               <tr key={index} className="bg-white border-b hover:bg-gray-50">
-                <td className="px-6 py-4 font-medium text-gray-900">{device.name}</td>
-                <td className="px-6 py-4">{device.id}</td>
+                <td className="px-6 py-4 font-medium text-gray-900">
+                  {device.device_name}
+                </td>
+                <td className="px-6 py-4">{device.unique_id}</td>
                 <td className="px-6 py-4">{getStatusBadge(device.status)}</td>
-                <td className="px-6 py-4">{device.battery}%</td>
                 <td className="px-6 py-4">
                   <Link
-                    to={`/devices/${device.id}`}
+                    to={`/devices/${device.device_id}`}
                     className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800"
-                  >
+                    >
                     View Details
                     <svg
                       className="w-4 h-4 ml-1"
@@ -81,8 +84,9 @@ const DeviceTable = ({ title, devices }) => {
           </tbody>
         </table>
       </div>
-    </div>
-  )
+    
+  </div>
+  );
 }
 
 export default DeviceTable

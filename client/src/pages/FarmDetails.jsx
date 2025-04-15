@@ -15,7 +15,7 @@ const FarmDetails = () => {
   const { farm_id } = useParams()
   const [farmData, setFarmData] = useState(null)
   const [farmName, setFarmName] = useState(null)
-  const farms = useSelector((state) => state.farms);
+  const {farms} = useFarm()
 
   const farmSoilData = async (farmId) => { 
     try {
@@ -34,10 +34,11 @@ const FarmDetails = () => {
   const getFarmName = (id) => {
     try {
       const farm = farms.find((farm) => farm.farm_id === id);
+      console.log("Farm found:", farm);
       setFarmName(farm?.name || "Unknown Farm");
     } catch (err) {
-      console.error("Error finding farm:", err);
-      setFarmName("Unknown Farm");
+      // console.error("Error finding farm:", err);
+      // setFarmName("Unknown Farm");
     }
   };
 
@@ -49,6 +50,7 @@ const FarmDetails = () => {
    };
 
    getFarmName(farm_id);
+   
     
    fetchData();
  }, [farm_id,farms]);
@@ -63,7 +65,7 @@ const FarmDetails = () => {
           <Header />
 
           <div className="mb-6 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900 first-letter:capitalize">{farmName} Farm Dashboard</h1>
+            <h1 className="text-2xl font-bold text-gray-900 first-letter:capitalize">{farmName} Farm Details</h1>
             <button className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:bg-gray-800">
               <svg
                 className="w-5 h-5 mr-2"

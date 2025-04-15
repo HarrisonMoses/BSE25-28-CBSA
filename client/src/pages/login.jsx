@@ -27,13 +27,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(formData);
-    if (isAuthenticated) {
-      loadUser();
-      navigate("/");
-    } else {
-      setError("Invalid username or password");
-    }
-    
+       
   };
 
   return (
