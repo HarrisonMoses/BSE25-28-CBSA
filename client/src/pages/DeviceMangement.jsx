@@ -1,34 +1,37 @@
 "use client";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import DeviceTable from "../components/DeviceTable";
 import AddButton from "../components/AddButton";
+import Modal from "../components/Modal";
+import DeviceForm from "../components/DeviceForm";
 import { useFarm } from "../store/hooks/useFarm";
-import { useEffect } from "react";
 
 const DeviceManagement = () => {
-
-  const { farms ,getFarms} = useFarm();
+  const { farms,getFarms } = useFarm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const getFarm = () => {
-      if (!farms) {
-        getFarms();
-        console.log(farms)
-      }
+    if (!farms) {
+      getFarms(); // Fetch farms if not already available
     }
+   
+  }, []);
 
-    getFarm();
-      
-  },[farms])
+  
   
 
   const handleAddDevice = () => {
-    console.log("Add new device clicked");
-    // In a real app, you would navigate to a form or open a modal
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
+  
   <Sidebar >
     <div className="bg-gray-50 min-h-screen">
       <div className="p-4 sm:ml-64">
@@ -49,6 +52,9 @@ const DeviceManagement = () => {
         }  
       </div>
     </div>
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="Add New Device">
+        <DeviceForm onClose={closeModal} />
+      </Modal>
   </Sidebar>
   );
 };
