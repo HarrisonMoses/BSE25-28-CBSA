@@ -12,6 +12,7 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useFarm } from "../store/hooks/useFarm";
+import FarmNotificatio from "./FarmNotifications";
 
 const FarmDetails = () => {
   const { farm_id } = useParams();
@@ -171,7 +172,7 @@ const FarmDetails = () => {
           </div>
 
           {/* Recommendations */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h2 className="text-lg font-semibold mb-4">Recommendations</h2>
             {farmData?.recommendations?.map((rec, index) => (
               <RecommendationCard
@@ -181,7 +182,8 @@ const FarmDetails = () => {
                 description={rec.description}
               />
             ))}
-          </div>
+          </div> */}
+          <FarmNotificatio/>
 
           {/* AI Chat */}
           <ChatBox
@@ -190,6 +192,7 @@ const FarmDetails = () => {
           />
         </div>
       </div>
+
       {/* Delete Confirmation Modal */}
       <Modal
         isOpen={isDeleteModalOpen}
