@@ -2,7 +2,7 @@
 
 from django.http import HttpResponse, JsonResponse
 from ..services.email_service import send_custom_email
-from ..services.recomender import crop_recommender
+from ..services.crop_recommender import crop_recommender
 
 def send_email_view(request):
     # try:

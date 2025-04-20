@@ -47,7 +47,7 @@ class FarmSerializer(serializers.ModelSerializer):
     crops = FarmCropSerializer(many=True, read_only=True)
     class Meta:
         model = Farm
-        fields = ['farm_id', 'name', 'location','size','created_at','devices','crops']
+        fields = ['farm_id', 'name', 'location','size','status','created_at','devices','crops']
         read_only_fields = ['farm_id']
 
     def to_representation(self, instance):
@@ -80,5 +80,15 @@ class SensorDataSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Device ID is required to create sensor data.")
         return SensorData.objects.create(device_id=device_id, **validated_data)
 
+class FarmSensorDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SensorData
+        fields = ['id', 'moisture_level', 'temperature', 'nitrogen', 'phosphorous', 'potassium', 'farm_uuid', 'created_at']
 
+    def create(self, validated_data):
+        farm_id = self.context['farm_id']
+        if not farm_id:
+            raise serializers.ValidationError("Farm ID is required to create sensor data.")
+        return SensorData.objects.create(farm_id=farm_id, **validated_data)
 
+    

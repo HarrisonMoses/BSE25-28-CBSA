@@ -8,7 +8,7 @@ class FarmCropViewSet(ModelViewSet):
     serializer_class = FarmCropSerializer
 
     def get_queryset(self):
-        return FarmCrop.objects.filter(farm=self.kwargs['farm_pk'])
+        return FarmCrop.objects.filter(farm=self.kwargs['farms_pk'])
     
     def get_serializer_context(self):
-        return {'farm_id': self.kwargs['farm_pk']}
+        return {'farm_id': self.kwargs['farms_pk']}
