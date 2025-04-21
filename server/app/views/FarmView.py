@@ -23,7 +23,7 @@ class FarmViewSet(ModelViewSet):
             return Farm.objects.none()
 
         # devices = Prefetch('devices', queryset=Device.objects.all(), to_attr='set_devices')
-        return Farm.objects.filter(farmer=farmer)
+        return Farm.objects.prefetch_related('notifications','devices').filter(farmer=farmer)
 
     def get_serializer_context(self):
         """Provide additional context to the serializer."""

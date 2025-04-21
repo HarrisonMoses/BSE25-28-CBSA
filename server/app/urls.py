@@ -10,15 +10,19 @@ router.register('farms', FarmViewSet, basename='farms')
 router.register('crop', CropViewSet, basename='crop')
 
 
-# Nested router: Farm -> FarmCrop and Farm -> devices
+#Farm Nested router: Farm -> FarmCrop and Farm -> devices
 farm_router = routers.NestedDefaultRouter(router, 'farms', lookup='farms')
 farm_router.register('crops', FarmCropViewSet, basename='farm-crops')
 farm_router.register('devices', DeviceViewSet, basename='farm-devices')
+farm_router.register('notification', FarmNotificationView, basename='farm-notification')
 farm_router.register('data', FarmSensorDataViewSet, basename='farm-sensor-data')
 
+# Farmer Nested Routes:
 farmer_router =routers.NestedDefaultRouter(router, 'farmer', lookup='farmer')
+farmer_router.register('notification',UserNotificationView, basename='farmer-notifications')
 farm_router.register('farms',FarmViewSet, basename='create-farm')
 
+# Devices Nested routes:
 device_router = routers.NestedDefaultRouter(router, 'device', lookup='device')
 device_router.register("data", SensorDataViewSet, basename='device-sensor-data')
 

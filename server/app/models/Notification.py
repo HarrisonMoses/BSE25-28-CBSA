@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from .FarmModel import Farm
 
 User = get_user_model()
 
@@ -40,10 +41,10 @@ class Notification(models.Model):
         choices=PriorityLevel.choices,
         default=PriorityLevel.MEDIUM
     )
-
+    recommendation = models.TextField(null=True, blank=True)  
     # Related objects (optional - for deep linking)
     farm = models.ForeignKey(
-        'Farm',
+        Farm,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

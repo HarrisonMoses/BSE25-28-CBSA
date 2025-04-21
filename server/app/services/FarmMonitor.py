@@ -47,33 +47,19 @@ class FarmMonitoringAgent:
         alerts = nutrient_alert_agent(soil_data,crops) 
         return alerts  
 
-
-    def generate_recommendations(self, alerts, crops ):
-        """Converts alerts into actionable recommendations"""
-        print("Generating recommendations...")
-        recommendations = []
-       
-        # for alert in alerts:
-        #     rc = recommend_action_agent(alert,crops)
-        #     # recommendations.append(
-        #     #     rc['recommendation']
-        #     # )
-        #     print (rc)
-          
-        print(f"Recommendations done!")
-        return recommendations
     
-    def create_notifications(self, recommendations):
+    def create_notifications(self, alerts):
         """Create notification records for the farmer"""
         print
         
-        for recommendation in recommendations:
+        for alert in alerts:
             Notification.objects.create(
                 user=self.farm.farmer.user,
-                title="Soil Improvement Recommendation",
-                message=recommendation,
+                title=alert['alert'],
+                message=alert['recommendation'],
+                recommendation=alert['recommendation'],
                 notification_type=Notification.NotificationType.FARM_ALERT,
-                priority=Notification.PriorityLevel.MEDIUM,
+                priority=alert['severity'],
                 farm=self.farm
             )
     
@@ -86,13 +72,10 @@ class FarmMonitoringAgent:
         if not alerts:
             return "All soil parameters within normal ranges"
         
-        crops = self.crops   
-        recommendations = self.generate_recommendations(alerts, crops)
-        # self.create_notifications(recommendations)
+        self.create_notifications(recommendations=alerts)
         
         return {
             'farm': self.farm.name,
             'crops': [c.crop.crop for c in self.crops],
-            'alerts': alerts,
-            'recommendations': recommendations
+            'alerts': alerts,    
         }

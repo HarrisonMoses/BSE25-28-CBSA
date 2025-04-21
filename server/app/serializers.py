@@ -39,15 +39,27 @@ class FarmCropSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         farm_id = self.context['farm_id']   
         return FarmCrop.objects.create(farm_id=farm_id, **validated_data)
+
+class FarmNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
+
+    def create(self, validated_data):
+        farm_id = self.context['farm_id']
+        if not farm_id:
+            raise serializers.ValidationError("Farm ID is required to create a notification.")
+        return Notification.objects.create(farm_id=farm_id, **validated_data)
     
 
 
 class FarmSerializer(serializers.ModelSerializer):
     devices = DeviceSerializer(many=True, read_only=True)
     crops = FarmCropSerializer(many=True, read_only=True)
+    notifications = FarmNotificationSerializer(many=True, read_only=True)
     class Meta:
         model = Farm
-        fields = ['farm_id', 'name', 'location','size','status','created_at','devices','crops']
+        fields = ['farm_id', 'name', 'location','size','status','created_at','devices','crops','notifications']
         read_only_fields = ['farm_id']
 
     def to_representation(self, instance):
@@ -90,5 +102,12 @@ class FarmSensorDataSerializer(serializers.ModelSerializer):
         if not farm_id:
             raise serializers.ValidationError("Farm ID is required to create sensor data.")
         return SensorData.objects.create(farm_id=farm_id, **validated_data)
-
     
+
+
+class UserNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
+
+
