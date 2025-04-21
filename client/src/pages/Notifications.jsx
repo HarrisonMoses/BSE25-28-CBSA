@@ -141,8 +141,8 @@ const Notifications = () => {
   };
 
   return (
+    <Sidebar>
     <div className="bg-gray-50 min-h-screen">
-      <Sidebar />
 
       <div className="p-4 sm:ml-64">
         <Header />
@@ -228,7 +228,8 @@ const Notifications = () => {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </Sidebar>
   );
 };
 

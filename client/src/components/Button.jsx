@@ -11,7 +11,7 @@ const Button = ({
   const getButtonClasses = () => {
     switch (variant) {
       case "primary":
-        return "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-300";
+        return "text-white bg-red-600 hover:bg-red-700 focus:ring-indigo-300";
       case "secondary":
         return "text-white bg-gray-700 hover:bg-gray-800 focus:ring-gray-300";
       case "success":

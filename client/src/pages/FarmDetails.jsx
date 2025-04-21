@@ -12,7 +12,7 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useFarm } from "../store/hooks/useFarm";
-import FarmNotificatio from "./FarmNotifications";
+import FarmNotification from "./FarmNotifications";
 
 const FarmDetails = () => {
   const { farm_id } = useParams();
@@ -20,7 +20,7 @@ const FarmDetails = () => {
   const [farmData, setFarmData] = useState(null);
   const [farmName, setFarmName] = useState(null);
   const farms = useSelector((state) => state.farm.farms);
-  const { deleteFarm } = useFarm();
+  const { getFarms, deleteFarm } = useFarm();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -37,9 +37,9 @@ const FarmDetails = () => {
 
   const getFarmName = (id) => {
     try {
-      const farm = farms.find((farm) => farm.farm_id === id);
+      const farm = farms?.map((farm) => farm.farm_id === id);
       console.log("Farm found:", farm);
-      setFarmName(farm?.name || "Unknown Farm");
+      setFarmName(farm.name || "Unknown Farm");
     } catch (err) {
       // console.error("Error finding farm:", err);
       // setFarmName("Unknown Farm");
@@ -47,6 +47,8 @@ const FarmDetails = () => {
   };
 
   useEffect(() => {
+    getFarms(); 
+
     const fetchData = async () => {
       await farmSoilData(farm_id);
     };
@@ -54,7 +56,7 @@ const FarmDetails = () => {
     getFarmName(farm_id);
 
     fetchData();
-  }, [farm_id, farms]);
+  }, [farm_id]);
 
   const handleDeleteClick = () => {
     setIsDeleteModalOpen(true);
@@ -87,7 +89,7 @@ const FarmDetails = () => {
               <Button
                 name="Delete Farm"
                 action={handleDeleteClick}
-                variant="secondary"
+                variant="primary"
                 icon={
                   <svg
                     className="w-4 h-4"
@@ -105,7 +107,7 @@ const FarmDetails = () => {
                   </svg>
                 }
               />
-              <button className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:bg-gray-800">
+              {/* <button className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:bg-gray-800">
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="currentColor"
@@ -115,7 +117,7 @@ const FarmDetails = () => {
                   <path d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm8 6a6 6 0 100-12 6 6 0 000 12zm1-5a1 1 0 11-2 0 1 1 0 012 0zm-3-4a1 1 0 00-1 1v3a1 1 0 002 0V8a1 1 0 00-1-1z"></path>
                 </svg>
                 AI Advisor
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -172,18 +174,7 @@ const FarmDetails = () => {
           </div>
 
           {/* Recommendations */}
-          {/* <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4">Recommendations</h2>
-            {farmData?.recommendations?.map((rec, index) => (
-              <RecommendationCard
-                key={index}
-                type={rec.type}
-                title={rec.title}
-                description={rec.description}
-              />
-            ))}
-          </div> */}
-          <FarmNotificatio/>
+          <FarmNotification/> 
 
           {/* AI Chat */}
           <ChatBox
@@ -216,7 +207,7 @@ const FarmDetails = () => {
             <Button
               name={isDeleting ? "Deleting..." : "Delete Farm"}
               action={handleDeleteConfirm}
-              variant="secondary"
+              variant="primary"
               disabled={isDeleting}
               icon={
                 <svg

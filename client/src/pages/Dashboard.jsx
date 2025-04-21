@@ -20,7 +20,7 @@ const Dashboard = () => {
   useEffect(() => {
     getFarms();
     
-  }, [farms]);
+  }, []);
 
   const handleAddFarm = () => {
     setIsAddModalOpen(true);
@@ -159,7 +159,7 @@ const Dashboard = () => {
             <Button
               name={isDeleting ? "Deleting..." : "Delete Farm"}
               action={handleDeleteConfirm}
-              variant="secondary"
+              variant="primary"
               disabled={isDeleting}
               icon={
                 <svg
