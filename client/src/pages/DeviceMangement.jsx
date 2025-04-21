@@ -35,8 +35,7 @@ const DeviceManagement = () => {
   <Sidebar >
     <div className="bg-gray-50 min-h-screen">
       <div className="p-4 sm:ml-64">
-        <Header />
-        <div className="mb-6">
+       <div className="mb-6">
           <AddButton text="Add New Device" onClick={handleAddDevice} />
         </div>
           {

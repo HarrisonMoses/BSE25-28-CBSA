@@ -13,6 +13,8 @@ import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useFarm } from "../store/hooks/useFarm";
 import FarmNotification from "./FarmNotifications";
+import NutrientsChart from "../components/NutrientChat";
+import MoistureChart from "../components/MoistureChart";
 
 const FarmDetails = () => {
   const { farm_id } = useParams();
@@ -79,9 +81,9 @@ const FarmDetails = () => {
     <Sidebar>
       <div className="bg-gray-50 min-h-screen">
         <div className="p-4 sm:ml-64">
-          <Header />
+          {/* <Header /> */}
 
-          <div className="mb-6 flex justify-between items-center">
+          <div className="mb-6 mt-4 flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-900 first-letter:capitalize">
               {farmName} Farm Dashboard
             </h1>
@@ -160,7 +162,7 @@ const FarmDetails = () => {
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <h2 className="text-lg font-semibold mb-4">Nutrient Trends</h2>
               <div className="h-64 flex items-center justify-center">
-                <p className="text-gray-500">Chart would be displayed here</p>
+                <NutrientsChart/>
               </div>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
@@ -168,19 +170,21 @@ const FarmDetails = () => {
                 Soil Moisture Trend
               </h2>
               <div className="h-64 flex items-center justify-center">
-                <p className="text-gray-500">Chart would be displayed here</p>
+                <MoistureChart/>
               </div>
             </div>
           </div>
 
           {/* Recommendations */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <FarmNotification/> 
+          </div>
 
           {/* AI Chat */}
-          <ChatBox
+          {/* <ChatBox
             title="AI AgriSense"
             initialMessage="Hello! I'm your AI Soil Advisor. How can I help you today with your soil management?"
-          />
+          /> */}
         </div>
       </div>
 

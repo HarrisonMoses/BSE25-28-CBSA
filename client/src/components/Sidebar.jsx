@@ -80,7 +80,7 @@ const Sidebar = ({ children }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-20 w-64 h-screen transition-transform bg-white border-r 
+        className={`fixed top-0 left-0 z-20 w-64 h-screen transition-transform bg-white border-r-2 border-amber-700 
           ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } sm:translate-x-0`}
@@ -179,7 +179,7 @@ const Sidebar = ({ children }) => {
                 </Link>
               </li>
 
-              <li>
+              {/* <li>
                 <Link
                   to="/advisor"
                   className={`flex items-center p-3 rounded-lg transition-colors hover:bg-indigo-50 hover:text-indigo-600 ${isActive(
@@ -196,7 +196,7 @@ const Sidebar = ({ children }) => {
                   </svg>
                   <span className="ml-3 font-medium">AI Advisor</span>
                 </Link>
-              </li>
+              </li> */}
 
               <li>
                 <Link

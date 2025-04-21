@@ -145,9 +145,7 @@ const Notifications = () => {
     <div className="bg-gray-50 min-h-screen">
 
       <div className="p-4 sm:ml-64">
-        <Header />
-
-        <div className="mb-6">
+       <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
           <p className="text-gray-600">
             Stay updated with alerts and information about your farms
@@ -155,7 +153,7 @@ const Notifications = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="p-4 border-b flex justify-between items-center">
+          <div className="p-4 border-l-2 border-amber-700 flex justify-between items-center">
             <h2 className="text-lg font-semibold">Recent Notifications</h2>
             <button className="text-sm text-indigo-600 hover:text-indigo-800">
               Mark all as read

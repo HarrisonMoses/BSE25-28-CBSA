@@ -60,9 +60,8 @@ const Dashboard = () => {
   return (
     <Sidebar>
       <div>
-        <div className="p-4 sm:ml-64">
-          <Header />
-
+        <div className="mt-4 p-4 sm:ml-64">
+          
           <div className="mb-6 flex space-x-3">
             <AddButton text="Add New Farm" onClick={handleAddFarm} />
           </div>
@@ -103,10 +102,10 @@ const Dashboard = () => {
                   </button>
                   <FarmCard
                         status ='Active'
-              farmName={farm.name}
+                    farmName={farm.name}
                     location={farm.location}
                     size={farm.size}
-                    crops={farm.crops?.map((crop) => crop.name).join(", ")}
+                    crops={farm.crops?.map((crop) => crop.crop).join(", ")}
                     farm_id={farm.farm_id}
                     // status={farm.status || "Active"}
                   />

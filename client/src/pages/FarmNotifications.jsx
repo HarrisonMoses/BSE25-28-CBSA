@@ -1,4 +1,4 @@
-import {NotificationItem} from "../components/NotificatioItem";
+import {NotificationItem} from "../components/collapsableTable";
 
 
 export default function FarmNotification() {
@@ -65,7 +65,7 @@ export default function FarmNotification() {
   ];
 
   return (
-    <div className="min-w-md w-1/2">
+    <div className="w-full">
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
         <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4">
           <h2 className="text-white text-lg font-semibold flex items-center">

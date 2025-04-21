@@ -1,81 +1,97 @@
-import { Chart, useChart } from "@chakra-ui/charts";
 import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Legend,
-  Tooltip,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
 } from "recharts";
 
-export const NutrientChart = () => {
-  const chart = useChart({
-    data: [
-      { windows: 186, mac: 80, linux: 120, month: "January" },
-      { windows: 165, mac: 95, linux: 110, month: "February" },
-      { windows: 190, mac: 87, linux: 125, month: "March" },
-      { windows: 195, mac: 88, linux: 130, month: "May" },
-      { windows: 182, mac: 98, linux: 122, month: "June" },
-      { windows: 175, mac: 90, linux: 115, month: "August" },
-      { windows: 180, mac: 86, linux: 124, month: "October" },
-      { windows: 185, mac: 91, linux: 126, month: "November" },
-    ],
-    series: [
-      { name: "windows", color: "teal.solid" },
-      { name: "mac", color: "purple.solid" },
-      { name: "linux", color: "blue.solid" },
-    ],
-  });
+const salesData = [
+  {
+    name: "Jan",
+    nitrogen: 4000,
+    phosphorous: 2400,
+    potassium: 1800,
+  },
+  {
+    name: "Feb",
+    nitrogen: 3000,
+    phosphorous: 1398,
+    potassium: 2200,
+  },
+  {
+    name: "Mar",
+    nitrogen: 9800,
+    phosphorous: 2000,
+    potassium: 3500,
+  },
+  {
+    name: "Apr",
+    nitrogen: 3908,
+    phosphorous: 2780,
+    potassium: 1200,
+  },
+  {
+    name: "May",
+    nitrogen: 4800,
+    phosphorous: 1890,
+    potassium: 2800,
+  },
+  {
+    name: "Jun",
+    nitrogen: 3800,
+    phosphorous: 2390,
+    potassium: 1900,
+  },
+];
 
+const NutrientsChart = () => {
   return (
-    <Chart.Root maxH="sm" chart={chart}>
-      <AreaChart data={chart.data}>
-        <CartesianGrid
-          stroke={chart.color("border")}
-          vertical={false}
-          strokeDasharray="3 3"
-        />
-        <XAxis
-          dataKey={chart.key("month")}
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-          tickFormatter={(value) => value.slice(0, 3)}
-        />
-        <YAxis tickLine={false} axisLine={false} />
-        <Tooltip
-          cursor={false}
-          animationDuration={100}
-          content={<Chart.Tooltip />}
-        />
-        <Legend content={<Chart.Legend />} />
-
-        {chart.series.map((item) => (
-          <defs key={item.name}>
-            <Chart.Gradient
-              id={`${item.name}-gradient`}
-              stops={[
-                { offset: "0%", color: item.color, opacity: 0.3 },
-                { offset: "100%", color: item.color, opacity: 0.05 },
-              ]}
-            />
-          </defs>
-        ))}
-
-        {chart.series.map((item) => (
-          <Area
-            key={item.name}
-            type="natural"
-            isAnimationActive={false}
-            dataKey={chart.key(item.name)}
-            fill={`url(#${item.name}-gradient)`}
-            stroke={chart.color(item.color)}
-            strokeWidth={2}
-            stackId="a"
-          />
-        ))}
-      </AreaChart>
-    </Chart.Root>
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart
+        width={500}
+        height={300}
+        data={salesData}
+        margin={{
+          right: 30,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend />
+        <Line type="monotone" dataKey="nitrogen" stroke="#FFD700" />
+        <Line type="monotone" dataKey="phosphorous" stroke="#8b5cf6" />
+        <Line type="monotone" dataKey="potassium" stroke="#32CD32" />
+      </LineChart>
+    </ResponsiveContainer>
   );
+};
+
+export default NutrientsChart;
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="p-4 bg-slate-900 flex flex-col gap-4 rounded-md">
+        <p className="text-medium text-lg text-white ">{label}</p>
+        <p className="text-sm text-amber-300">
+          nitrogen:
+          <span className="ml-2">${payload[0].value}</span>
+        </p>
+        <p className="text-sm text-indigo-400">
+          phosphorous:
+          <span className="ml-2">${payload[1].value}</span>
+        </p>
+        <p className="text-sm text-emerald-500">
+          potassium:
+          <span className="ml-2">${payload[2].value}</span>
+        </p>
+      </div>
+    );
+  }
 };
