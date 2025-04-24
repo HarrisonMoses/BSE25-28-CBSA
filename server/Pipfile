@@ -22,6 +22,7 @@ django-celery = "*"
 redis = "*"
 celery = "*"
 openai-agents = "*"
+flower = "*"
 
 [dev-packages]
 

@@ -8,10 +8,8 @@ class UserNotificationView(ModelViewSet):
     serializer_class = UserNotificationSerializer
 
     def get_queryset(self):
-        return Notification.objects.filter(user=self.request.user)
+        return Notification.objects.filter(user=self.request.user).order_by('created_at')
     
-    def get_serializer_context(self):
-        return {'farm_id': self.kwargs['farms_pk']}
     
     
 

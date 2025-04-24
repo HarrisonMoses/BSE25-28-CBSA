@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import  timedelta 
 from decouple import config
 import os
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -91,7 +92,7 @@ DATABASES = {
         'NAME': config("DB_NAME"),
         'USER': config("DB_USER"),
         'PASSWORD': config("DB_PASSWORD"),
-        'HOST': config("DB_HOST"),
+        'HOST': config("WSL_HOST"),
         'PORT': config("DB_PORT"),
     }
 }
@@ -197,18 +198,36 @@ EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = "admin@localhost"
 
-#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0MTM1MTIyNSwiaWF0IjoxNzQxMjY0ODI1LCJqdGkiOiJhOTFhOThhYjYwMGI0NDE4YWIzZTY3N2EzNjNhZGE1MiIsInVzZXJfaWQiOjF9.1Br3fL5tIsrxYCpcv5hvG0rMfG6t2ynh3gaKwJFhcXY
 
-CELERY_BROKER_URL = "redis://localhost:6379/1"
+CELERY_BROKER_URL = "redis://localhost:6379/2"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-# CELERY_BEAT_SCHEDULE = {
-#     'recommender': {
-#         'task': 'app.services.recomender.crop_recommender',
-#         'args': ["message"],
-#         'schedule':5,  # Every minute
-#     },
-# }
+CELERY_BEAT_SCHEDULE = {
+    
+    'farm_monitor': {
+        'task': 'app.services.advisors.monitor_all_farms',
+        'args': (),
+        'schedule':5,# every Monday at 1 AM
+    },
+}
 
 
 #openAi
 OPENAI_API_KEY = config("OPENAI_API_KEY")
+
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'celery_tasks.log',
+        },
+    },
+    'loggers': {
+        'app.services': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    },
+}

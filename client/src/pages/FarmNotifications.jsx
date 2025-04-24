@@ -82,7 +82,7 @@ export default function FarmNotification() {
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Farm Notifications
+            Farm Recommendations
           </h2>
           <p className="text-emerald-100 text-sm mt-1">3 new updates</p>
         </div>

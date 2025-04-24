@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
 router.register('farmer', FarmerViewSet, basename='farmer')
 router.register('device', DevicesViewSet, basename='device')
 router.register('farms', FarmViewSet, basename='farms')
+router.register('notification', UserNotificationView, basename='notification')
 router.register('crop', CropViewSet, basename='crop')
 
 
@@ -19,7 +20,6 @@ farm_router.register('data', FarmSensorDataViewSet, basename='farm-sensor-data')
 
 # Farmer Nested Routes:
 farmer_router =routers.NestedDefaultRouter(router, 'farmer', lookup='farmer')
-farmer_router.register('notification',UserNotificationView, basename='farmer-notifications')
 farm_router.register('farms',FarmViewSet, basename='create-farm')
 
 # Devices Nested routes:

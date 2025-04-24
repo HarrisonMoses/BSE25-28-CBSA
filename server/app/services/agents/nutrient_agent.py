@@ -1,6 +1,7 @@
 from openai import OpenAI
 from pydantic import BaseModel, Field
 from enum import Enum
+from typing import List
 from django.conf import settings
 import os
 import json
@@ -20,11 +21,11 @@ class Alert(BaseModel):
     alert: str = Field(..., description="Description of the alert")
     severity: Severity = Field(..., description="Severity of the alert")
     description: str = Field(..., description="How are Crop(s) affected by the alert")
-    recommedation: str = Field(..., description="Recommendation to resolve the alert")
+    recommendation: str = Field(..., description="Recommendation to resolve the alert")
 
 class Recommendation(BaseModel):
     """Model for nutrient recommendations"""
-    recommendation: list[str] = Field(..., description="Actions on how to improve soil conditions for the available crop(s)")
+    recommendation: List[str] 
    
 def nutrient_alert_agent(latest_sensor_data, crops):
     """Analyzes soil conditions against crop requirements"""
@@ -68,14 +69,13 @@ def nutrient_alert_agent(latest_sensor_data, crops):
             model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.3,
-            response_format=Alert ,
+            response_format= Alert ,
             max_tokens=700
         )
-
-        gpt_output = response.choices[0].message.content
+        alerts = json.loads(response.choices[0].message.content)
+        
        
-        alerts = json.loads(gpt_output)
-        print(f"GPT output: {alerts}")
+    
         return alerts
 
     except Exception as e:

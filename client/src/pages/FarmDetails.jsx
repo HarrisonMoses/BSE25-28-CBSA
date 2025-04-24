@@ -15,7 +15,7 @@ import { useFarm } from "../store/hooks/useFarm";
 import FarmNotification from "./FarmNotifications";
 import NutrientsChart from "../components/NutrientChat";
 import MoistureChart from "../components/MoistureChart";
-
+// P9$y#F5x!b&
 const FarmDetails = () => {
   const { farm_id } = useParams();
   const navigate = useNavigate();
