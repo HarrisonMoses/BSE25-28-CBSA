@@ -14,53 +14,92 @@ import FarmDetails from "./pages/FarmDetails.jsx";
 import RegisterDevice from "./pages/RegisterDevice.jsx";
 import AIAdvisor from "./pages/AIAdvisor.jsx";
 import Notifications from "./pages/Notifications.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AuthRedirect from "./components/authRedirect.jsx";
+import AuthInitializer from "./hooks/AuthInitializer.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     errorElement: <NotFound />,
   },
   {
     path: "login",
-    element: <Login />,
+    element: (
+      <AuthRedirect>
+        <Login />
+      </AuthRedirect>
+    ),
   },
   {
     path: "register",
-    element: <Register />,
+    element: (
+      <AuthRedirect>
+        <Register />
+      </AuthRedirect>
+    ),
   },
   {
     path: "devices",
-    element: <DeviceManagement />,
+    element: (
+      <ProtectedRoute>
+        <DeviceManagement />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "devices/:deviceId",
-    element: <DeviceManagement />,
+    element: (
+      <ProtectedRoute>
+        <DeviceManagement />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "register-device",
-    element: <RegisterDevice />,
+    element: (
+      <ProtectedRoute>
+        <RegisterDevice />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "farms/:farm_id",
-    element: <FarmDetails />,
+    element: (
+      <ProtectedRoute>
+        <FarmDetails />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "advisor",
-    element: <AIAdvisor />,
+    element: (
+      <ProtectedRoute>
+        <AIAdvisor />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "notifications",
-    element: <Notifications />,
+    element: (
+      <ProtectedRoute>
+        <Notifications />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <UserProvider>
-     
+      <AuthInitializer>
         <RouterProvider router={router} />
-
+      </AuthInitializer>
     </UserProvider>
   </Provider>
 );
