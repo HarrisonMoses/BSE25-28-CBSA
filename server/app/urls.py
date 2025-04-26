@@ -1,6 +1,9 @@
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
 from django.urls import path, include
 from rest_framework_nested import routers
 from .views import *
+
 
 
 router = routers.DefaultRouter()
@@ -36,5 +39,9 @@ urlpatterns = [
     path("", include(device_router.urls)), 
     path('mail/',send_email_view, name='email_view'),
     path('recommendation/<int:farm_id>/', view=crop_recommender_view, name='crop_recommender'), # /recomemdation/
-    path('monitor/<int:farm_id>/', view=farm_monitoring_view, name='farm_monitor'), # /farm_monitor
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ] 
