@@ -4,25 +4,26 @@ import { useSelector } from "react-redux";
 import { api } from "../hooks/axiosConfigs/intercepters";
 
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 import MetricCard from "../components/MetricCard";
-import RecommendationCard from "../components/RecommendationCard";
-import ChatBox from "../components/ChatBox";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useFarm } from "../store/hooks/useFarm";
+import { useNotify } from "../store/hooks/useNotify";
 import FarmNotification from "./FarmNotifications";
 import NutrientsChart from "../components/NutrientChat";
 import MoistureChart from "../components/MoistureChart";
 // P9$y#F5x!b&
+
+
 const FarmDetails = () => {
   const { farm_id } = useParams();
   const navigate = useNavigate();
-  const [farmData, setFarmData] = useState(null);
-  const [farmName, setFarmName] = useState(null);
-  const farms = useSelector((state) => state.farm.farms);
-  const { getFarms, deleteFarm } = useFarm();
+  const [SoilData, setSoilData] = useState(null);
+  const [farmName, setFarmName] = useState('');
+  const { getFarms, deleteFarm, farms } = useFarm();
+  const [FarmNotifications, setFarmNotifications] = useState([]);
+  const { notifications, getNotifications } = useNotify();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -30,39 +31,50 @@ const FarmDetails = () => {
     try {
       const res = await api.get(`api/farms/${farmId}/data/`);
       const result = Object.assign({}, ...res.data);
-      setFarmData(result);
-      console.log("Farm data:", result);
+      setSoilData(result);
     } catch (error) {
       console.error("Error fetching farm data:", error);
     }
   };
 
-  const getFarmName = (id) => {
-    try {
-      const farm = farms?.map((farm) => farm.farm_id === id);
-      console.log("Farm found:", farm);
-      setFarmName(farm.name || "Unknown Farm");
-    } catch (err) {
-      // console.error("Error finding farm:", err);
-      // setFarmName("Unknown Farm");
-    }
-  };
 
-  useEffect(() => {
-    getFarms(); 
+ useEffect(() => {
+   const fetchData = async () => {
+     if (farms.length === 0) {
+       await getFarms(); // wait for farms
+     }
+     if (notifications.length === 0) {
+       await getNotifications(); // wait for notifications
+     }
 
-    const fetchData = async () => {
-      await farmSoilData(farm_id);
-    };
+     if (farms.length > 0) {
+       const farm = farms.filter((f) => f.farm_id === parseInt(farm_id));
+       setFarmName(farm[0]?.name);
+     } 
+      
+    
+     if (Array.isArray(notifications) && notifications.length > 0) {
+       const filtered = notifications.filter(
+         (n) => n.farm === parseInt(farm_id)
+       );
+       setFarmNotifications(filtered);
+     }
 
-    getFarmName(farm_id);
+     await farmSoilData(farm_id);
+   };
 
-    fetchData();
-  }, [farm_id]);
+   fetchData();
+ }, [notifications,farms, farm_id]);
+  
+
+
 
   const handleDeleteClick = () => {
     setIsDeleteModalOpen(true);
   };
+
+
+
 
   const handleDeleteConfirm = async () => {
     setIsDeleting(true);
@@ -85,7 +97,7 @@ const FarmDetails = () => {
 
           <div className="mb-6 mt-4 flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-900 first-letter:capitalize">
-              {farmName} Farm Dashboard
+              { farmName } Farm Dashboard
             </h1>
             <div className="flex space-x-3">
               <Button
@@ -128,31 +140,31 @@ const FarmDetails = () => {
             <MetricCard
               type="soil_moisture"
               label="Soil Moisture"
-              value={farmData?.moisture_level}
+              value={SoilData?.moisture_level}
               unit="%"
             />
             <MetricCard
               type="temperature"
               label="Temperature"
-              value={farmData?.temperature}
+              value={SoilData?.temperature}
               unit="°C"
             />
             <MetricCard
               type="nitrogen"
               label="Nitrogen"
-              value={farmData?.nitrogen}
+              value={SoilData?.nitrogen}
               unit="mg/kg"
             />
             <MetricCard
               type="Phosphorus"
               label="Phosphorus"
-              value={farmData?.phosphorous}
+              value={SoilData?.phosphorous}
               unit="mg/kg"
             />
             <MetricCard
               type="Potassium"
               label="Potassium"
-              value={farmData?.potassium}
+              value={SoilData?.potassium}
               unit="mg/kg"
             />
           </div>
@@ -177,7 +189,9 @@ const FarmDetails = () => {
 
           {/* Recommendations */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <FarmNotification/> 
+            <FarmNotification
+            notifications={FarmNotifications}
+            /> 
           </div>
 
           {/* AI Chat */}

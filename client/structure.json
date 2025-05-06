@@ -1,0 +1,175 @@
+{
+  "auth": {
+    "user": {
+      "id": 10,
+      "first_name": "hello",
+      "last_name": "Pra",
+      "email": "praja@gmail.com",
+      "phone": "07864753652",
+      "username": "heli",
+      "is_active": true
+    },
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NTIwNjYwLCJpYXQiOjE3NDY0MzQyNjAsImp0aSI6ImU2Yjk1OTdiNTkwNDQ5ZjJhNTIyMTIwNDY4YjljMzk4IiwidXNlcl9pZCI6MTB9.WwBi1SPJxAivaYKF3jBDJTbzvfsZVJTAVo4K-8RPn94",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjUyMDY2MCwiaWF0IjoxNzQ2NDM0MjYwLCJqdGkiOiI1OWUyNzYwNjM5Njk0MzU5YjM4MGQ1OTVhODZlNzRlMyIsInVzZXJfaWQiOjEwfQ.p_PtdGqtsquffKyoXY3_a63dn0nutuVqbc59PDRale0",
+    "loading": false,
+    "error": null,
+    "isAuthenticated": true
+  },
+  "farm": {
+    "farms": [
+      {
+        "farm_id": 3,
+        "name": "masaba",
+        "location": "masaba",
+        "size": 2,
+        "status": "A",
+        "created_at": "2025-03-31T11:57:53.066821Z",
+        "devices": [
+          {
+            "device_id": 2,
+            "device_name": "helis D",
+            "unique_id": "2456734673476",
+            "status": true,
+            "created_at": "2025-03-31T12:00:04.984414Z"
+          }
+        ],
+        "crops": [
+          {
+            "id": 1,
+            "crop_id": 1,
+            "crop": "Maize",
+            "created_at": "2025-04-17T04:39:28.907118Z"
+          }
+        ],
+        "notifications": [
+          {
+            "id": 8,
+            "title": "Potassium levels are above the optimal range for Maize.",
+            "message": "The potassium level is at 120.0 ppm, which exceeds the optimal range of 95.0 ppm for Maize. Excess potassium can interfere with the uptake of other essential nutrients like magnesium and calcium, potentially affecting crop growth.",
+            "notification_type": "farm_alert",
+            "priority": "medium",
+            "recommendation": null,
+            "is_read": true,
+            "created_at": "2025-04-23T17:23:53.288311Z",
+            "read_at": null,
+            "action_url": null,
+            "user": 10,
+            "farm": 3
+          },
+          {
+            "id": 4,
+            "title": "Potassium levels are outside the optimal range for Maize.",
+            "message": "The potassium level is 120.0 ppm, which is above the optimal range of 95.0 ppm for Maize. This can lead to nutrient imbalance affecting crop growth.",
+            "notification_type": "farm_alert",
+            "priority": "medium",
+            "recommendation": null,
+            "is_read": true,
+            "created_at": "2025-04-23T17:23:32.787422Z",
+            "read_at": null,
+            "action_url": null,
+            "user": 10,
+            "farm": 3
+          },
+          {
+            "id": 3,
+            "title": "Potassium levels are higher than optimal for Maize.",
+            "message": "The potassium levels in the soil are currently at 120.0 ppm, which exceeds the optimal range for Maize (95.0 ppm). This can lead to nutrient imbalance, affecting the crop's growth and yield.",
+            "notification_type": "farm_alert",
+            "priority": "medium",
+            "recommendation": null,
+            "is_read": true,
+            "created_at": "2025-04-23T17:23:28.376936Z",
+            "read_at": null,
+            "action_url": null,
+            "user": 10,
+            "farm": 3
+          },
+          {
+            "id": 2,
+            "title": "Potassium levels are above the optimal range for Maize.",
+            "message": "The potassium level in the soil is at 120.0 ppm, which is above the maximum requirement of 95.0 ppm for Maize. This can lead to nutrient imbalances affecting crop growth.",
+            "notification_type": "farm_alert",
+            "priority": "medium",
+            "recommendation": null,
+            "is_read": true,
+            "created_at": "2025-04-23T17:23:22.632200Z",
+            "read_at": null,
+            "action_url": null,
+            "user": 10,
+            "farm": 3
+          }
+        ]
+      }
+    ],
+    "farmerProfile": null,
+    "loading": false,
+    "error": null,
+    "createStatus": "idle",
+    "deleteStatus": "idle"
+  },
+  "notify": {
+    "notifications": [
+      {
+        "id": 2,
+        "title": "Potassium levels are above the optimal range for Maize.",
+        "message": "The potassium level in the soil is at 120.0 ppm, which is above the maximum requirement of 95.0 ppm for Maize. This can lead to nutrient imbalances affecting crop growth.",
+        "notification_type": "farm_alert",
+        "priority": "medium",
+        "recommendation": null,
+        "is_read": true,
+        "created_at": "2025-04-23T17:23:22.632200Z",
+        "read_at": null,
+        "action_url": null,
+        "user": 10,
+        "farm": 3
+      },
+      {
+        "id": 3,
+        "title": "Potassium levels are higher than optimal for Maize.",
+        "message": "The potassium levels in the soil are currently at 120.0 ppm, which exceeds the optimal range for Maize (95.0 ppm). This can lead to nutrient imbalance, affecting the crop's growth and yield.",
+        "notification_type": "farm_alert",
+        "priority": "medium",
+        "recommendation": null,
+        "is_read": true,
+        "created_at": "2025-04-23T17:23:28.376936Z",
+        "read_at": null,
+        "action_url": null,
+        "user": 10,
+        "farm": 3
+      },
+      {
+        "id": 4,
+        "title": "Potassium levels are outside the optimal range for Maize.",
+        "message": "The potassium level is 120.0 ppm, which is above the optimal range of 95.0 ppm for Maize. This can lead to nutrient imbalance affecting crop growth.",
+        "notification_type": "farm_alert",
+        "priority": "medium",
+        "recommendation": null,
+        "is_read": true,
+        "created_at": "2025-04-23T17:23:32.787422Z",
+        "read_at": null,
+        "action_url": null,
+        "user": 10,
+        "farm": 3
+      },
+      {
+        "id": 8,
+        "title": "Potassium levels are above the optimal range for Maize.",
+        "message": "The potassium level is at 120.0 ppm, which exceeds the optimal range of 95.0 ppm for Maize. Excess potassium can interfere with the uptake of other essential nutrients like magnesium and calcium, potentially affecting crop growth.",
+        "notification_type": "farm_alert",
+        "priority": "medium",
+        "recommendation": null,
+        "is_read": true,
+        "created_at": "2025-04-23T17:23:53.288311Z",
+        "read_at": null,
+        "action_url": null,
+        "user": 10,
+        "farm": 3
+      }
+    ],
+    "unread": 0,
+    "loading": false,
+    "error": null,
+    "createStatus": "idle",
+    "deleteStatus": "idle"
+  }
+}

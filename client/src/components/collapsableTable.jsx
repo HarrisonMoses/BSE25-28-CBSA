@@ -7,7 +7,7 @@ import {
   FiInfo,
 } from "react-icons/fi";
 
-export const NotificationItem = ({ title, content, status, time }) => {
+export const NotificationItem = ({ title, status, recommendation, time }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const statusIcons = {
@@ -21,20 +21,20 @@ export const NotificationItem = ({ title, content, status, time }) => {
       <div
         className={`p-4 cursor-pointer flex justify-between items-center 
           ${
-            status === "alert"
+            status === "medium"
               ? "bg-yellow-50"
-              : status === "success"
-              ? "bg-green-50"
-              : "bg-gray-50"
+              : status === "high"
+              ? "bg-red-50"
+              : "bg-orange-50"
           }`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center">
           {statusIcons[status]}
-          <h3 className="font-medium text-gray-800">{title}</h3>
+          <h3 className="font-medium text-gray-800 ">{title}</h3>
         </div>
         <div className="flex items-center">
-          <span className="text-xs text-gray-500 mr-3">{time}</span>
+          <span className="text-xs text-gray-500 mr-3 ml-3 shrink-0">{time}</span>
           {isOpen ? (
             <FiChevronDown className="text-gray-500" />
           ) : (
@@ -45,7 +45,13 @@ export const NotificationItem = ({ title, content, status, time }) => {
 
       {isOpen && (
         <div className="p-4 bg-white border-t border-gray-100">
-          <div className="text-sm text-gray-600">{content}</div>
+          <div className="text-sm text-gray-600">
+            <div>
+              <p className="mb-2">
+                {recommendation}
+              </p> 
+            </div>
+          </div>
         </div>
       )}
     </div>

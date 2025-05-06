@@ -71,7 +71,7 @@ const farmSlice = createSlice({
     resetCreateStatus: (state) => {
       state.createStatus = "idle";
     },
-
+    
     getFarmsDetails: (state, action) => {
       state.farms = state.farms.find((farm) => {
         farm.farm_id === action.payload;
@@ -152,5 +152,5 @@ const farmSlice = createSlice({
   },
 });
 
-export const { clearFarmError, resetCreateStatus } = farmSlice.actions;
+export const { clearFarmError, resetCreateStatus, } = farmSlice.actions;
 export default farmSlice.reducer;

@@ -81,15 +81,18 @@ const CustomTooltip = ({ active, payload, label }) => {
         <p className="text-medium text-lg text-white ">{label}</p>
         <p className="text-sm text-amber-300">
           nitrogen:
-          <span className="ml-2">${payload[0].value}</span>
+          <span className="ml-2">{payload[0].value}</span>
+          <span className="ml-1">ppm</span>
         </p>
         <p className="text-sm text-indigo-400">
           phosphorous:
-          <span className="ml-2">${payload[1].value}</span>
+          <span className="ml-2">{payload[1].value}</span>
+          <span className="ml-1">ppm</span>
         </p>
         <p className="text-sm text-emerald-500">
           potassium:
-          <span className="ml-2">${payload[2].value}</span>
+          <span className="ml-2">{payload[2].value}</span>
+          <span className="ml-1">ppm</span>
         </p>
       </div>
     );
