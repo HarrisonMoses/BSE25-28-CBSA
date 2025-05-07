@@ -6,7 +6,6 @@ import { useFarm } from "../store/hooks/useFarm";
 import {
   FiHome,
   FiLayers,
-  FiSettings,
   FiAlertCircle,
   FiLogOut,
   FiChevronDown,
@@ -15,23 +14,32 @@ import {
   FiX,
 } from "react-icons/fi";
 import FarmLink from "../components/farmlink";
+import { useNotify } from "../store/hooks/useNotify";
 
 const Sidebar = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { farms } = useFarm();
+  const{notifications} = useNotify();
   const [farmsDropdownOpen, setFarmsDropdownOpen] = useState(false);
+  const [UnreadNotification, setUnreadNotification] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 640);
       if (window.innerWidth >= 640) {
-        setSidebarOpen(true);
+        setSidebarOpen(false);
       }
     };
+
+    const unreadNotifications = notifications.filter(
+      (notification) => !notification.is_read
+    )
+    setUnreadNotification(unreadNotifications.length);
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -82,7 +90,7 @@ const Sidebar = ({ children }) => {
       <aside
         className={`fixed top-0 left-0 z-20 w-64 h-screen transition-transform bg-white border-r-2 border-amber-700 
           ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            sidebarOpen ? "translate-x-0 " : "-translate-x-full"
           } sm:translate-x-0`}
       >
         <div className="h-full px-4 py-6 overflow-y-auto flex flex-col">
@@ -222,6 +230,11 @@ const Sidebar = ({ children }) => {
                     <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500"></span>
                   </div>
                   <span className="ml-3 font-medium">Notifications</span>
+                  {UnreadNotification > 0 && (
+                    <span className="ml-3 px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800">
+                      {UnreadNotification}
+                    </span>
+                  )}
                 </Link>
               </li>
             </ul>

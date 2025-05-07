@@ -5,6 +5,7 @@ import {
   fetchFarms,
   fetchFarmerProfile,
   clearFarmError,
+  updateFarm,
   resetCreateStatus,
 } from "../slices/farms";
 
@@ -20,6 +21,7 @@ export const useFarm = () => {
     createFarm: (data) => dispatch(createFarm(data)),
     deleteFarm: (id) => dispatch(deleteFarm(id)),
     getFarms: () => dispatch(fetchFarms()),
+    updateFarm: (id,data) => dispatch(updateFarm(id,data)),
     getFarmerProfile: () => dispatch(fetchFarmerProfile()),
     getFarmDetails: (id) => dispatch(fetchFarmerProfile(id)),
     clearError: () => dispatch(clearFarmError()),

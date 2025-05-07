@@ -1,4 +1,3 @@
-// src/components/AuthInitializer.jsx
 import { useEffect } from "react";
 import { useAuth } from "../store/hooks/useAuth";
 

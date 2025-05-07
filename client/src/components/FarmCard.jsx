@@ -16,7 +16,7 @@ const FarmCard = ({farm_id, farmName, location, size, crops, status }) => {
   return (
     <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm w-full">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-semibold text-gray-900">{farmName} Farm</h3>
+        <h3 className="text-xl font-semibold text-gray-900 first-letter:capitalize">{farmName} Farm</h3>
         <span
           className={`px-2.5 py-0.5 rounded-md text-xs font-medium ${getStatusClass(
             status

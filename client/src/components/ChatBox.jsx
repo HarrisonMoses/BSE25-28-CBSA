@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const ChatBox = ({ title, initialMessage }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,

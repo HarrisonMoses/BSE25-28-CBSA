@@ -3,9 +3,10 @@
 import { useState } from "react"
 import Button from "./Button"
 import { useSelector } from "react-redux"
-import { register_device_to_farm } from "../hooks/devices"
+import { registerDeviceToFarm,removeDeviceFarm } from "../hooks/devices"
 
 const DeviceForm = ({ onClose }) => {
+  const[farmId,setFarmId] = useState(null)
   const farms = useSelector((state) => state.farm.farms)
   const [formData, setFormData] = useState({
     name: "",
@@ -26,9 +27,9 @@ const DeviceForm = ({ onClose }) => {
     e.preventDefault()
     setLoading(true)
     try {
-      await register_device_to_farm(formData.farm_id, {
-        name: formData.name,
-        device_id: formData.device_id,
+      await registerDeviceToFarm(parseInt(formData.farm_id), {
+        device_name: formData.name,
+        unique_id: formData.device_id,
       })
       onClose()
     } catch (error) {

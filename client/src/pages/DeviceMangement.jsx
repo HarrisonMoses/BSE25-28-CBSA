@@ -7,6 +7,7 @@ import AddButton from "../components/AddButton";
 import Modal from "../components/Modal";
 import DeviceForm from "../components/DeviceForm";
 import { useFarm } from "../store/hooks/useFarm";
+import { removeDeviceFarm,registerDeviceToFarm } from "../hooks/devices";
 
 const DeviceManagement = () => {
   const { farms,getFarms } = useFarm();

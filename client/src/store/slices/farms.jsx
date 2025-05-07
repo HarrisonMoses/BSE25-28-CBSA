@@ -39,6 +39,18 @@ export const fetchFarms = createAsyncThunk(
   }
 );
 
+export const updateFarm = createAsyncThunk(
+  "farm/update",
+  async ({ farmId, farmData }, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`api/farms/${farmId}/`, farmData);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
 export const fetchFarmerProfile = createAsyncThunk(
   "farm/fetchProfile",
   async (_, { rejectWithValue }) => {
@@ -146,6 +158,21 @@ const farmSlice = createSlice({
         state.farmerProfile = action.payload;
       })
       .addCase(fetchFarmerProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      }).addCase(updateFarm.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateFarm.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.farms.findIndex(
+          (farm) => farm.farm_id === action.payload.farm_id
+        );
+        if (index !== -1) {
+          state.farms[index] = action.payload;
+        }
+      }).addCase(updateFarm.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -5,7 +5,6 @@ import FarmCard from "../components/FarmCard";
 import AddButton from "../components/AddButton";
 import Button from "../components/Button";
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 import Modal from "../components/Modal";
 import FarmForm from "../components/FarmForm";
 import { useFarm } from "../store/hooks/useFarm";

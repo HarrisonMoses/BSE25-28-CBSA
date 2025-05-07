@@ -2,30 +2,37 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { api } from "../hooks/axiosConfigs/intercepters";
-
 import Sidebar from "../components/Sidebar";
 import MetricCard from "../components/MetricCard";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
+import ChatBox from "../components/ChatBox";
 import { useEffect, useState } from "react";
 import { useFarm } from "../store/hooks/useFarm";
 import { useNotify } from "../store/hooks/useNotify";
 import FarmNotification from "./FarmNotifications";
 import NutrientsChart from "../components/NutrientChat";
 import MoistureChart from "../components/MoistureChart";
-// P9$y#F5x!b&
-
+import { GetCrops,addCropToFarm,removeCropFromFarm } from "../hooks/crops";
 
 const FarmDetails = () => {
   const { farm_id } = useParams();
   const navigate = useNavigate();
-  const [SoilData, setSoilData] = useState(null);
-  const [farmName, setFarmName] = useState('');
-  const { getFarms, deleteFarm, farms } = useFarm();
-  const [FarmNotifications, setFarmNotifications] = useState([]);
+  const [soilData, setSoilData] = useState(null);
+  const [farmName, setFarmName] = useState("");
+  const [farmLocation, setFarmLocation] = useState("");
+  const [farmSize, setFarmSize] = useState("");
+  const { getFarms, updateFarm, farms } = useFarm();
+  const [farmNotifications, setFarmNotifications] = useState([]);
+  const [crops, setCrops] = useState([]);
+  const [farmCrops, setFarmCrops] = useState([]);
+  const [newCrop, setNewCrop] = useState("");
   const { notifications, getNotifications } = useNotify();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const farmSoilData = async (farmId) => {
     try {
@@ -37,101 +44,190 @@ const FarmDetails = () => {
     }
   };
 
-
- useEffect(() => {
-   const fetchData = async () => {
-     if (farms.length === 0) {
-       await getFarms(); // wait for farms
-     }
-     if (notifications.length === 0) {
-       await getNotifications(); // wait for notifications
-     }
-
-     if (farms.length > 0) {
-       const farm = farms.filter((f) => f.farm_id === parseInt(farm_id));
-       setFarmName(farm[0]?.name);
-     } 
-      
+  const fetchCrops = async () => { 
+    const res = await GetCrops();
+    if (res.status === 200) {
+      setCrops(res.data);
+      console.log("Crops fetched successfully:", crops);
+    } else {
+      console.error("Error fetching crops:", res.statusText);
+    }
     
-     if (Array.isArray(notifications) && notifications.length > 0) {
-       const filtered = notifications.filter(
-         (n) => n.farm === parseInt(farm_id)
-       );
-       setFarmNotifications(filtered);
-     }
+  }
 
-     await farmSoilData(farm_id);
-   };
-
-   fetchData();
- }, [notifications,farms, farm_id]);
-  
-
-
-
-  const handleDeleteClick = () => {
-    setIsDeleteModalOpen(true);
+  const handleEditClick = () => {
+    setIsEditModalOpen(true);
   };
 
+  const handleAddCropClick = () => {
+    setIsCropModalOpen(true);
+  };
 
-
-
-  const handleDeleteConfirm = async () => {
-    setIsDeleting(true);
+  const handleFarmUpdate = async (e) => {
+    e.preventDefault();
+    setIsUpdating(true);
     try {
-      await deleteFarm(farm_id);
-      setIsDeleteModalOpen(false);
-      navigate("/"); // Redirect to dashboard after deletion
+      await updateFarm(farm_id, {
+        name: farmName,
+        location: farmLocation,
+        size: farmSize,
+      });
+      setIsEditModalOpen(false);
     } catch (error) {
-      console.error("Error deleting farm:", error);
+      console.error("Error updating farm:", error);
     } finally {
-      setIsDeleting(false);
+      setIsUpdating(false);
     }
   };
 
+  const handleAddCrop = async (e) => {
+    e.preventDefault();
+    if (!newCrop.trim()) return;
+
+    try {
+      await addCropToFarm(farm_id, { crop_id: parseInt(newCrop) });
+      setNewCrop("");
+      setIsCropModalOpen(false);
+      alert("Crop added successfully!");
+    } catch (error) {
+      console.error("Error adding crop:", error);
+    }
+  };
+
+  const handleDeleteCrop = async (farm_id,cropId) => {
+    try {
+      await removeCropFromFarm(farm_id, cropId);
+      alert("Crop deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting crop:", error);
+    }
+  };
+
+useEffect(() => {
+  const fetchData = async () => {
+    if (farms.length === 0) {
+      await getFarms();
+    }
+    await fetchCrops();
+    if (notifications.length === 0) {
+      await getNotifications();
+    }
+
+    if (farms.length > 0) {
+      const farm = farms.find((f) => f.farm_id === parseInt(farm_id));
+      if (farm) {
+        setFarmName(farm.name);
+        setFarmLocation(farm.location || "");
+        setFarmSize(farm.size || "");
+        setFarmCrops(farm.crops || []);
+      }
+    }
+
+    if (Array.isArray(notifications) && notifications.length > 0) {
+      const filtered = notifications.filter(
+        (n) => n.farm === parseInt(farm_id)
+      );
+      setFarmNotifications(filtered);
+    }
+
+    await farmSoilData(farm_id);
+  };
+
+  fetchData();
+}, [notifications, farms, farm_id]);
+
+
+
   return (
     <Sidebar>
-      <div className="bg-gray-50 min-h-screen">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
         <div className="p-4 sm:ml-64">
-          {/* <Header /> */}
-
-          <div className="mb-6 mt-4 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900 first-letter:capitalize">
-              { farmName } Farm Dashboard
-            </h1>
-            <div className="flex space-x-3">
+          {/* Farm Header */}
+          <div className="mb-6 mt-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 first-letter:capitalize">
+                {farmName} Farm Dashboard
+              </h1>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">
+                {farmLocation && (
+                  <p className="text-gray-600">
+                    <span className="font-semibold">Location:</span>{" "}
+                    {farmLocation}
+                  </p>
+                )}
+                {farmSize && (
+                  <p className="text-gray-600">
+                    <span className="font-semibold">Size:</span> {farmSize}{" "}
+                    Acres
+                  </p>
+                )}
+                <div className="flex items-center">
+                  <span className="font-semibold text-gray-600">Crops:</span>
+                  {farmCrops.length > 0 ? (
+                    <div className="flex flex-wrap gap-1 ml-2">
+                      {farmCrops.map((crop) => (
+                        <span
+                          key={crop.id}
+                          className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                        >
+                          {crop.crop}
+                          <button
+                            onClick={() => handleDeleteCrop(farm_id, crop.id)}
+                            className="ml-1 text-green-600 hover:text-red-800 cursor-pointer"
+                          >
+                            &times;
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-gray-500 ml-2">None</span>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3">
               <Button
-                name="Delete Farm"
-                action={handleDeleteClick}
-                variant="primary"
+                name="Add Crop"
+                action={handleAddCropClick}
+                variant="secondary"
                 icon={
                   <svg
                     className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    ></path>
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
                   </svg>
                 }
               />
-              {/* <button className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:bg-gray-800">
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm8 6a6 6 0 100-12 6 6 0 000 12zm1-5a1 1 0 11-2 0 1 1 0 012 0zm-3-4a1 1 0 00-1 1v3a1 1 0 002 0V8a1 1 0 00-1-1z"></path>
-                </svg>
-                AI Advisor
-              </button> */}
+              <Button
+                name="Edit Farm"
+                action={handleEditClick}
+                variant="secondary"
+                icon={
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                }
+              />
+              
             </div>
           </div>
 
@@ -140,112 +236,194 @@ const FarmDetails = () => {
             <MetricCard
               type="soil_moisture"
               label="Soil Moisture"
-              value={SoilData?.moisture_level}
+              value={soilData?.moisture_level}
               unit="%"
+              trend="up"
             />
             <MetricCard
               type="temperature"
               label="Temperature"
-              value={SoilData?.temperature}
+              value={soilData?.temperature}
               unit="°C"
+              trend="down"
             />
             <MetricCard
               type="nitrogen"
               label="Nitrogen"
-              value={SoilData?.nitrogen}
+              value={soilData?.nitrogen}
               unit="mg/kg"
+              trend="neutral"
             />
             <MetricCard
               type="Phosphorus"
               label="Phosphorus"
-              value={SoilData?.phosphorous}
+              value={soilData?.phosphorous}
               unit="mg/kg"
+              trend="up"
             />
             <MetricCard
               type="Potassium"
               label="Potassium"
-              value={SoilData?.potassium}
+              value={soilData?.potassium}
               unit="mg/kg"
+              trend="down"
             />
           </div>
 
           {/* Charts Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <h2 className="text-lg font-semibold mb-4">Nutrient Trends</h2>
-              <div className="h-64 flex items-center justify-center">
-                <NutrientsChart/>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                Nutrient Trends
+              </h2>
+              <div className="h-64">
+                <NutrientsChart />
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <h2 className="text-lg font-semibold mb-4">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h2 className="text-lg font-semibold mb-4 text-gray-800">
                 Soil Moisture Trend
               </h2>
-              <div className="h-64 flex items-center justify-center">
-                <MoistureChart/>
+              <div className="h-64">
+                <MoistureChart />
               </div>
             </div>
           </div>
 
-          {/* Recommendations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <FarmNotification
-            notifications={FarmNotifications}
-            /> 
+          {/* Notifications and Chat */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div className="lg:col-span-2">
+              <FarmNotification notifications={farmNotifications} />
+            </div>
+            <div className="lg:col-span-1">
+              <ChatBox
+                title="AI AgriSense"
+                initialMessage="Hello! I'm your AI Soil Advisor. How can I help you today with your soil management?"
+              />
+            </div>
           </div>
-
-          {/* AI Chat */}
-          {/* <ChatBox
-            title="AI AgriSense"
-            initialMessage="Hello! I'm your AI Soil Advisor. How can I help you today with your soil management?"
-          /> */}
         </div>
       </div>
+  
 
-      {/* Delete Confirmation Modal */}
+      {/* Edit Farm Modal */}
       <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        title="Confirm Deletion"
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        title="Edit Farm Details"
       >
-        <div className="p-4">
-          <p className="mb-4 text-gray-700">
-            Are you sure you want to delete{" "}
-            <span className="font-semibold">{farmName} Farm</span>? This action
-            cannot be undone.
-          </p>
+        <form onSubmit={handleFarmUpdate} className="p-6">
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-medium mb-2"
+              htmlFor="farmName"
+            >
+              Farm Name
+            </label>
+            <input
+              id="farmName"
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={farmName}
+              onChange={(e) => setFarmName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-medium mb-2"
+              htmlFor="farmLocation"
+            >
+              Location
+            </label>
+            <input
+              id="farmLocation"
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={farmLocation}
+              onChange={(e) => setFarmLocation(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-medium mb-2"
+              htmlFor="farmSize"
+            >
+              Size (acres)
+            </label>
+            <input
+              id="farmSize"
+              type="number"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={farmSize}
+              onChange={(e) => setFarmSize(e.target.value)}
+              min="0"
+              step="0.1"
+            />
+          </div>
+
           <div className="flex justify-end space-x-3">
             <button
               type="button"
-              onClick={() => setIsDeleteModalOpen(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              onClick={() => setIsEditModalOpen(false)}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
             >
               Cancel
             </button>
             <Button
-              name={isDeleting ? "Deleting..." : "Delete Farm"}
-              action={handleDeleteConfirm}
+              name={isUpdating ? "Updating..." : "Update Farm"}
+              type="submit"
               variant="primary"
-              disabled={isDeleting}
-              icon={
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  ></path>
-                </svg>
-              }
+              disabled={isUpdating}
             />
           </div>
-        </div>
+        </form>
+      </Modal>
+
+      {/* Add Crop Modal */}
+      <Modal
+        isOpen={isCropModalOpen}
+        onClose={() => setIsCropModalOpen(false)}
+        title="Add New Crop"
+      >
+        <form onSubmit={handleAddCrop} className="p-6">
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-medium mb-2"
+              htmlFor="newCrop"
+            >
+              Crop Name
+            </label>
+            <select
+              id="newCrop"
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={newCrop}
+              onChange={(e) => setNewCrop(e.target.value)}
+              placeholder="Enter crop name"
+              required
+            >
+              {
+                crops.map((c) => (
+                  <option key={c.id} value={c.crop_id}>{c.crop}</option>
+                ))
+              }
+            </select>
+          </div>
+
+          <div className="flex justify-end space-x-3">
+            <button
+              type="button"
+              onClick={() => setIsCropModalOpen(false)}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+            >
+              Cancel
+            </button>
+            <Button name="Add Crop" type="submit" variant="primary" />
+          </div>
+        </form>
       </Modal>
     </Sidebar>
   );

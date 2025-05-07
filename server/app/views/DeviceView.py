@@ -10,10 +10,10 @@ class DeviceViewSet(ModelViewSet):
     serializer_class = DeviceSerializer
 
     def get_queryset(self):
-        return Device.objects.filter(farm=self.kwargs['farm_pk'])
+        return Device.objects.filter(farm=self.kwargs['farms_pk'])
     
     def get_serializer_context(self):
-        return {'farm_id': self.kwargs['farm_pk']}
+        return {'farm_id': self.kwargs['farms_pk']}
 
 
 class DevicesViewSet(ModelViewSet):
