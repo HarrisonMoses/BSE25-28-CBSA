@@ -4,10 +4,10 @@ const DeviceTable = ({ farmName, devices, onStatusChange, onDelete }) => {
   const getStatusBadge = (status) => {
     switch (String(status)) {
       case "true":
-      case "Active":
+      
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20">
-            {status}
+            Active
           </span>
         );
       case "Maintenance":
@@ -17,10 +17,10 @@ const DeviceTable = ({ farmName, devices, onStatusChange, onDelete }) => {
           </span>
         );
       case "false":
-      case "Inactive":
+      
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20">
-            {status}
+            Inactive
           </span>
         );
       default:

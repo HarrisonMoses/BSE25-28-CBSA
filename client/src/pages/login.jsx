@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link ,useLocation,useNavigate} from "react-router-dom";
 
 import Logo from "../assets/logo";
 import { useAuth } from "../store/hooks/useAuth";
@@ -8,12 +8,15 @@ import { loginUser } from "../store/slices/auth";
 
 function Login() {
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   const {login,loadUser ,authError,authLoading,isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const navigate = useNavigate();
+  
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -27,7 +30,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(formData);
-       
+    const from = location.state?.from?.pathname || "/";
+    navigate(from, { replace: true });    
   };
 
   return (

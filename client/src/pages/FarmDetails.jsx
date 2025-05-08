@@ -13,6 +13,7 @@ import { useNotify } from "../store/hooks/useNotify";
 import FarmNotification from "./FarmNotifications";
 import NutrientsChart from "../components/NutrientChat";
 import MoistureChart from "../components/MoistureChart";
+import CropRecommendation from "../components/cropRecommendation";
 import { GetCrops,addCropToFarm,removeCropFromFarm } from "../hooks/crops";
 
 const FarmDetails = () => {
@@ -227,7 +228,6 @@ useEffect(() => {
                   </svg>
                 }
               />
-              
             </div>
           </div>
 
@@ -269,6 +269,11 @@ useEffect(() => {
               trend="down"
             />
           </div>
+          {/* Crop Recommendations */}
+          <CropRecommendation
+            soilData={soilData}
+            farm_id={farm_id}
+          />
 
           {/* Charts Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -304,7 +309,6 @@ useEffect(() => {
           </div>
         </div>
       </div>
-  
 
       {/* Edit Farm Modal */}
       <Modal
@@ -405,11 +409,12 @@ useEffect(() => {
               placeholder="Enter crop name"
               required
             >
-              {
-                crops.map((c) => (
-                  <option key={c.id} value={c.crop_id}>{c.crop}</option>
-                ))
-              }
+              <option value="" disabled>--select-crop--</option>
+              {crops.map((c) => (
+                <option key={c.id} value={c.crop_id}>
+                  {c.crop}
+                </option>
+              ))}
             </select>
           </div>
 

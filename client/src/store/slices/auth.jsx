@@ -20,8 +20,7 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await auth.post("auth/jwt/create/", credentials);
       const { access, refresh } = response.data;
-      setTokens(access, refresh);
-      window.location.href = "/";
+      setTokens(access, refresh); 
       return { access, refresh };
     } catch (error) {
       return rejectWithValue(error.response.data);
