@@ -39,6 +39,9 @@ const FarmDetails = () => {
     try {
       const res = await api.get(`api/farms/${farmId}/data/`);
       const result = Object.assign({}, ...res.data);
+      if (result === null) {    
+        return;
+      }
       setSoilData(result);
     } catch (error) {
       console.error("Error fetching farm data:", error);

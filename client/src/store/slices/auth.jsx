@@ -1,6 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api, auth, setTokens } from "../../hooks/axiosConfigs/intercepters";
 
+// Helper function to extract serializable error data
+const serializeError = (error) => {
+  if (!error) return null;
+  return {
+    message: error.message || "An error occurred",
+    status: error.response?.status,
+    data: error.response?.data || error.data,
+    code: error.code,
+  };
+};
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -9,7 +19,7 @@ export const registerUser = createAsyncThunk(
       const response = await auth.post("auth/users/", credentials);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(serializeError(error));
     }
   }
 );
@@ -20,10 +30,10 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await auth.post("auth/jwt/create/", credentials);
       const { access, refresh } = response.data;
-      setTokens(access, refresh); 
+      setTokens(access, refresh);
       return { access, refresh };
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(serializeError(error));
     }
   }
 );
@@ -39,7 +49,7 @@ export const fetchCurrentUser = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(serializeError(error));
     }
   }
 );
@@ -52,7 +62,7 @@ export const logoutUser = createAsyncThunk(
       localStorage.removeItem("refreshToken");
       return true;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(serializeError(error));
     }
   }
 );
@@ -87,7 +97,13 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        const payload = action.payload;
+        state.error = {
+          message: payload?.message,
+          status: payload?.status,
+          code: payload?.code,
+          fields: payload?.data || null, 
+        };
       })
 
       // Login
@@ -103,7 +119,13 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        const payload = action.payload;
+        state.error = {
+          message: payload?.message,
+          status: payload?.status,
+          code: payload?.code,
+          fields: payload?.data || null,
+        };
       })
 
       // Current User

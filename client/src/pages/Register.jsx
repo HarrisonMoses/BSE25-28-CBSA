@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo";
+import { toast } from "react-hot-toast";
 import { useAuth } from "../store/hooks/useAuth";
 
 function Register() {
   const [error, setError] = useState(null);
   const { register, authError, authLoading } = useAuth();
   const navigate = useNavigate();
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [formData, setFormData] = useState({
-    username: " ",
-    email: " ",
-    password: " ",
-    phone: " ",
+    username: "",
+    email: "",
+    password: "",
+    phone: "",
+    re_password: "",
   });
 
   const handleChange = (e) => {
@@ -26,16 +27,34 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== confirmPassword) {
-     alert("Passwords do not match");
+    if (formData.password !== formData.re_password) {
+     toast.error("Passwords do not match.");
       return;
     }
-    await register(formData);
-    if(!authError) {
+    
+    const res = await register(formData);
+    if (!res.error) {
+      toast.success("Registration successful! Please login.");
       navigate("/login");
+    } else {
+      const error = res.error;
+      console.error("Registration error:", authError);
+
+      if (authError?.fields) {
+       
+      } else {
+        toast.error(authError?.message || "Registration failed. Please try again.");
+      }
     }
     
   };
+  useEffect(() => {
+    if (authError?.fields) {
+      Object.entries(authError.fields).forEach(([field, messages]) => {
+        messages.forEach((msg) => toast.error(`${field}: ${msg}`));
+      });
+    }
+  }, [authError]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 py-8">
@@ -66,6 +85,7 @@ function Register() {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-amber-500 block w-full p-2.5"
               placeholder="@Eric123"
               value={formData.username}
+              autoComplete="off"
               onChange={handleChange}
               required
             />
@@ -85,6 +105,7 @@ function Register() {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </div>
@@ -102,6 +123,7 @@ function Register() {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
               placeholder="Enter your phone number"
               value={formData.phone}
+              autoComplete="off"
               onChange={handleChange}
               required
             />
@@ -161,12 +183,13 @@ function Register() {
             <div className="relative">
               <input
                 type="password"
-                id="confirmPassword"
-                name="confirmPassword"
+                id="re_password"
+                name="re_password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                 placeholder="Re-enter your password"
-                value={formData.confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={formData.re_password}
+                onChange={handleChange}
+                autoComplete="off"
                 required
               />
               <button

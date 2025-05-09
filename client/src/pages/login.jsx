@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
 import { Link ,useLocation,useNavigate} from "react-router-dom";
 
 import Logo from "../assets/logo";
@@ -29,10 +30,24 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(formData);
+    const res = await login(formData);
+    if (!res.error) {
+      toast.success("Login successful!");
+      navigate("/login");
+    } else {
+      if (authError?.fields) {
+        toast.error("Invalid credentials username or password.");
+      } else {
+        toast.error(
+          authError?.message || "Registration failed. Please try again."
+        );
+      }
+    }
     const from = location.state?.from?.pathname || "/";
     navigate(from, { replace: true });    
   };
+
+   
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">

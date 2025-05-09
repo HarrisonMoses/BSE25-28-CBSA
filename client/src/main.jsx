@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { store } from "./store/configureAppStore.jsx";
 import { Provider } from "react-redux";
+import { Toaster } from "react-hot-toast";
 import { UserProvider } from "./context/context.jsx";
 
 import Dashboard from "./pages/Dashboard.jsx";
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
       <AuthRedirect>
         <Login />
       </AuthRedirect>
+      
     ),
   },
   {
@@ -42,6 +44,7 @@ const router = createBrowserRouter([
       <AuthRedirect>
         <Register />
       </AuthRedirect>
+      
     ),
   },
   {
@@ -98,6 +101,7 @@ createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <UserProvider>
       <AuthInitializer>
+        <Toaster position="top-right" reverseOrder={false} />
         <RouterProvider router={router} />
       </AuthInitializer>
     </UserProvider>
