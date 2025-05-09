@@ -16,8 +16,11 @@ const Button = ({
         return "text-white bg-gray-700 hover:bg-gray-800 focus:ring-gray-300";
       case "success":
         return "text-white bg-green-700 hover:bg-green-600 focus:ring-green-300";
+      case 'amber':
+        return "text-white bg-amber-900 hover:bg-amber-950 focus:ring-indigo-300";
+
       default:
-        return "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-300";
+        return "text-white bg-amber-900 hover:bg-amber-950 focus:ring-indigo-300";
     }
   };
 

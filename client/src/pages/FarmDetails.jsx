@@ -194,7 +194,7 @@ useEffect(() => {
               <Button
                 name="Add Crop"
                 action={handleAddCropClick}
-                variant="secondary"
+                variant="amber"
                 icon={
                   <svg
                     className="w-4 h-4"
