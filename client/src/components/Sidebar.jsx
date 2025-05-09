@@ -227,7 +227,7 @@ const Sidebar = ({ children }) => {
                       <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                       <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
-                    <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500"></span>
+                    <span className={`absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full ${UnreadNotification === 0? "bg-green-500": "bg-red-500"}`}></span>
                   </div>
                   <span className="ml-3 font-medium">Notifications</span>
                   {UnreadNotification > 0 && (
