@@ -59,7 +59,7 @@ class FarmSerializer(serializers.ModelSerializer):
     notifications = FarmNotificationSerializer(many=True, read_only=True)
     class Meta:
         model = Farm
-        fields = ['farm_id', 'name', 'location','size','status','created_at','devices','crops','notifications']
+        fields = ['farm_id','farm_uuid', 'name', 'location','size','status','created_at','devices','crops','notifications']
         read_only_fields = ['farm_id']
 
     def to_representation(self, instance):
