@@ -63,7 +63,7 @@ databases:
   - name: prod_db 
     postgresMajorVersion: '16'
     region: frankfurt 
-    plan: basic-4gb 
+    plan: free 
     databaseName: prod_db 
     user: root_user 
     ipAllowList: [] 
