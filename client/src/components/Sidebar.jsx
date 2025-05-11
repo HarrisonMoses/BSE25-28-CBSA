@@ -44,7 +44,7 @@ const Sidebar = ({ children }) => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [notifications]);
 
   const isActive = (path) => {
     return location.pathname === path

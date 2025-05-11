@@ -9,58 +9,21 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const salesData = [
-  {
-    name: "Jan",
-    nitrogen: 4000,
-    phosphorous: 2400,
-    potassium: 1800,
-  },
-  {
-    name: "Feb",
-    nitrogen: 3000,
-    phosphorous: 1398,
-    potassium: 2200,
-  },
-  {
-    name: "Mar",
-    nitrogen: 9800,
-    phosphorous: 2000,
-    potassium: 3500,
-  },
-  {
-    name: "Apr",
-    nitrogen: 3908,
-    phosphorous: 2780,
-    potassium: 1200,
-  },
-  {
-    name: "May",
-    nitrogen: 4800,
-    phosphorous: 1890,
-    potassium: 2800,
-  },
-  {
-    name: "Jun",
-    nitrogen: 3800,
-    phosphorous: 2390,
-    potassium: 1900,
-  },
-];
 
-const NutrientsChart = () => {
+const NutrientsChart = ({farmdata }) => {
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
         width={500}
         height={300}
-        data={salesData}
+        data={farmdata}
         margin={{
           right: 30,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="timestamp" />
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
@@ -82,17 +45,17 @@ const CustomTooltip = ({ active, payload, label }) => {
         <p className="text-sm text-amber-300">
           nitrogen:
           <span className="ml-2">{payload[0].value}</span>
-          <span className="ml-1">ppm</span>
+          <span className="ml-1">mg/kg</span>
         </p>
         <p className="text-sm text-indigo-400">
           phosphorous:
           <span className="ml-2">{payload[1].value}</span>
-          <span className="ml-1">ppm</span>
+          <span className="ml-1">mg/kg</span>
         </p>
         <p className="text-sm text-emerald-500">
           potassium:
           <span className="ml-2">{payload[2].value}</span>
-          <span className="ml-1">ppm</span>
+          <span className="ml-1">mg/kg</span>
         </p>
       </div>
     );

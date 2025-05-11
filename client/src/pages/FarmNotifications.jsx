@@ -40,7 +40,7 @@ export default function FarmNotification({ notifications }) {
               <NotificationItem
                 key={notification.id}
                 title={notification.title}
-                recommentdation={notification.recommentdation}
+                recommendation={notification.recommendation}
                 status={notification.priority}
                 time={formatDate(notification.created_at)}
               />

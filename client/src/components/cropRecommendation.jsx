@@ -2,36 +2,37 @@ import { useState, useEffect } from "react";
 import Button from "./Button";
 import { api } from "../hooks/axiosConfigs/intercepters";
 
-const CropRecommendation = ({ soilData, farm_id }) => {
+const CropRecommendation = ({ farm_id }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState(null);
   const [hoveredCrop, setHoveredCrop] = useState(null);
   const [hasFetched, setHasFetched] = useState(false);
 
-  // Load recommendations on component mount
+  // Load recommendations from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem(`cropRecommendations-${farm_id}`);
     if (saved) {
       setRecommendations(JSON.parse(saved));
+      setHasFetched(true);
     }
   }, [farm_id]);
 
-  const getRecommendations = async () => {
-    if (!soilData || !farm_id) {
-      console.warn("Missing soil data or farm ID");
-      return;
-    }
+  // Reset recommendations when farm changes
+  useEffect(() => {
+    setRecommendations(null);
+    localStorage.removeItem(`cropRecommendations-${farm_id}`);
+    setHasFetched(false);
+  }, [farm_id]);
 
-    // Prevent duplicate requests
+  const getRecommendations = async () => {
     if (isLoading || hasFetched) return;
 
     setIsLoading(true);
-
     try {
       const res = await api.get(`api/recommendation/${farm_id}/`);
       const data = res.data?.recommendations;
 
-      if (data && Array.isArray(data)) {
+      if (Array.isArray(data)) {
         setRecommendations(data);
         localStorage.setItem(
           `cropRecommendations-${farm_id}`,
@@ -46,14 +47,6 @@ const CropRecommendation = ({ soilData, farm_id }) => {
     }
   };
 
-  // Clear recommendations if soil data is missing
-  useEffect(() => {
-    if (!soilData && recommendations) {
-      setRecommendations(null);
-      localStorage.removeItem(`cropRecommendations-${farm_id}`);
-    }
-  }, [soilData, farm_id, recommendations]);
-
   return (
     <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-8">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
@@ -65,7 +58,7 @@ const CropRecommendation = ({ soilData, farm_id }) => {
             name={isLoading ? "Analyzing..." : "Get Recommendations"}
             action={getRecommendations}
             variant="success"
-            disabled={isLoading || !soilData || hasFetched}
+            disabled={isLoading || hasFetched}
           />
         </div>
 
@@ -98,12 +91,6 @@ const CropRecommendation = ({ soilData, farm_id }) => {
           </div>
         )}
       </div>
-
-      {!soilData && (
-        <p className="text-sm text-red-500 text-center mt-2">
-          Soil data unavailable for recommendations
-        </p>
-      )}
     </div>
   );
 };

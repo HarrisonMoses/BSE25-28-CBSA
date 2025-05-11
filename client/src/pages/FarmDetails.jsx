@@ -19,7 +19,7 @@ import { GetCrops,addCropToFarm,removeCropFromFarm } from "../hooks/crops";
 const FarmDetails = () => {
   const { farm_id } = useParams();
   const navigate = useNavigate();
-  const [soilData, setSoilData] = useState(null);
+  const [farmData, setfarmData] = useState([]);
   const [farmName, setFarmName] = useState("");
   const [farmLocation, setFarmLocation] = useState("");
   const [farmSize, setFarmSize] = useState("");
@@ -35,18 +35,33 @@ const FarmDetails = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const farmSoilData = async (farmId) => {
+  async function farmSoilData(farm_id) {
     try {
-      const res = await api.get(`api/farms/${farmId}/data/`);
-      const result = Object.assign({}, ...res.data);
-      if (result === null) {    
-        return;
-      }
-      setSoilData(result);
-    } catch (error) {
-      console.error("Error fetching farm data:", error);
+      
+      const response = await api.get(`/api/farms/${farm_id}/data`);
+      const data = await response.data;
+
+    const formatted = data?.map((entry) => ({
+      timestamp: new Date(entry.created_at).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }), // Or format as needed: .toLocaleDateString() for date
+      moisture: entry.moisture_level,
+      temperature: entry.temperature,
+      nitrogen: entry.nitrogen,
+      phosphorous: entry.phosphorous,
+      potassium: entry.potassium,
+    }));
+      console.log("Soil data fetched successfully:", formatted);
+      setfarmData(formatted);
+      return ;
+      
+  }catch (error) {
+      console.error("Error fetching soil data:", error);
     }
-  };
+
+  }
+  
 
   const fetchCrops = async () => { 
     const res = await GetCrops();
@@ -130,7 +145,7 @@ useEffect(() => {
     if (Array.isArray(notifications) && notifications.length > 0) {
       const filtered = notifications.filter(
         (n) => n.farm === parseInt(farm_id)
-      );
+      ).reverse();
       setFarmNotifications(filtered);
     }
 
@@ -239,53 +254,53 @@ useEffect(() => {
             <MetricCard
               type="soil_moisture"
               label="Soil Moisture"
-              value={soilData?.moisture_level}
+              value={farmData[farmData?.length - 1]?.moisture}
               unit="%"
               trend="up"
             />
             <MetricCard
               type="temperature"
               label="Temperature"
-              value={soilData?.temperature}
+              value={farmData[farmData?.length - 1]?.temperature}
               unit="°C"
               trend="down"
             />
             <MetricCard
               type="nitrogen"
               label="Nitrogen"
-              value={soilData?.nitrogen}
+              value={farmData[farmData?.length - 1]?.nitrogen}
               unit="mg/kg"
               trend="neutral"
             />
             <MetricCard
               type="Phosphorus"
               label="Phosphorus"
-              value={soilData?.phosphorous}
+              value={farmData[farmData?.length - 1]?.phosphorous}
               unit="mg/kg"
               trend="up"
             />
             <MetricCard
               type="Potassium"
               label="Potassium"
-              value={soilData?.potassium}
+              value={farmData[farmData?.length - 1]?.potassium}
               unit="mg/kg"
               trend="down"
             />
           </div>
           {/* Crop Recommendations */}
-          <CropRecommendation
-            soilData={soilData}
-            farm_id={farm_id}
-          />
+          {farmData?.length > 0   &&
+          <CropRecommendation farm_id={farm_id} />
+          }
 
           {/* Charts Section */}
+              {farmData?.length > 0 && 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <h2 className="text-lg font-semibold mb-4 text-gray-800">
                 Nutrient Trends
               </h2>
               <div className="h-64">
-                <NutrientsChart />
+                <NutrientsChart farmdata={farmData} />
               </div>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
@@ -293,22 +308,22 @@ useEffect(() => {
                 Soil Moisture Trend
               </h2>
               <div className="h-64">
-                <MoistureChart />
+                <MoistureChart
+                farmdata={farmData}
+                />
               </div>
             </div>
           </div>
+              }
 
           {/* Notifications and Chat */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {farmNotifications?.length > 0 && 
             <div className="lg:col-span-2">
               <FarmNotification notifications={farmNotifications} />
             </div>
-            <div className="lg:col-span-1">
-              <ChatBox
-                title="AI AgriSense"
-                initialMessage="Hello! I'm your AI Soil Advisor. How can I help you today with your soil management?"
-              />
-            </div>
+          }
+           
           </div>
         </div>
       </div>
@@ -412,7 +427,9 @@ useEffect(() => {
               placeholder="Enter crop name"
               required
             >
-              <option value="" disabled>--select-crop--</option>
+              <option value="" disabled>
+                --select-crop--
+              </option>
               {crops.map((c) => (
                 <option key={c.id} value={c.crop_id}>
                   {c.crop}
