@@ -5,7 +5,7 @@ from django.utils.dateparse import parse_datetime
 
 def fetch_and_store_sensor_data():
     print('fetching data')
-    API_URL = "https://api.thingspeak.com/channels/2912443/feeds.json?api_key=7SEG1UOO84U6C6QF"  
+    API_URL = "https://api.thingspeak.com/channels/2912443/feeds.json?api_key=7SEG1UOO84U6C6QF&results=10"  
     response = requests.get(API_URL)
     data = response.json()
     
