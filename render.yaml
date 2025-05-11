@@ -44,7 +44,7 @@ services:
     name: celery-beat
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: celery -A server beat --loglevel=info --scheduler 
+    startCommand: celery -A server beat --loglevel=info 
     envVars:
       - key: CELERY_BROKER_URL
         fromService:
