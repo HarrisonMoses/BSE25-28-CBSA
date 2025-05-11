@@ -58,6 +58,12 @@ services:
     plan: free  
 
   # 5. PostgreSQL Database
-  - type: PostgreSQL
-    name: prod-db
-    plan: free  
+databases:
+  - name: prod_db 
+    postgresMajorVersion: '16'
+    region: frankfurt 
+    plan: basic-4gb 
+    databaseName: prod_db 
+    user: root_user 
+    
+    
