@@ -58,7 +58,7 @@ services:
     plan: free  
 
   # 5. PostgreSQL Database
-  - type: Database
+  - type: database
     engine: postgres
     name: prod-db
     plan: free  
