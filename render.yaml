@@ -65,10 +65,7 @@ databases:
     plan: basic-4gb 
     databaseName: prod_db 
     user: root_user 
-    ipAllowList: # Default: allows all connections
-      - source: 203.0.113.4/30
-        description: office
-      - source: 198.51.100.1
-        description: home
+    ipAllowList: [] 
+      
     
     
