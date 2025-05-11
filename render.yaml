@@ -55,7 +55,8 @@ services:
   # 4. Redis (Celery Broker)
   - type: redis
     name: redis-prod
-    plan: free  
+    plan: free 
+    ipAllowList: [] 
 
   # 5. PostgreSQL Database
 databases:
