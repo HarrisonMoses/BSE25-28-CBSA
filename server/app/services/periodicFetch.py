@@ -3,8 +3,9 @@ from datetime import datetime
 from..models import SensorData, Device
 from django.utils.dateparse import parse_datetime
 
-def fetch_and_store_sensor_data(device_id, farm_uuid=None):
-    API_URL = "https://api.thingspeak.com/channels/2912443/feeds.json?api_key=7SEG1UOO84U6C6QF"  # Adjust results as needed
+def fetch_and_store_sensor_data():
+    print('fetching data')
+    API_URL = "https://api.thingspeak.com/channels/2912443/feeds.json?api_key=7SEG1UOO84U6C6QF"  
     response = requests.get(API_URL)
     data = response.json()
     
@@ -40,24 +41,32 @@ def fetch_and_store_sensor_data(device_id, farm_uuid=None):
     avg_p = total_p / count
     avg_k = total_k / count
 
+
+    # print(f"Avg Moisture: {avg_moisture}, Avg Temp: {avg_temp}, Avg N: {avg_n}, Avg P: {avg_p}, Avg K: {avg_k}")
     # Create new SensorData record
-    device = Device.objects.get(pk=device_id)
-    SensorData.objects.create(
-        device=device,
-        moisture_level=avg_moisture,
-        temperature=avg_temp,
-        nitrogen=avg_n,
-        phosphorous=avg_p,
-        potassium=avg_k,
-        farm_uuid=farm_uuid or "",
-    )
+    try:
+        device = Device.objects.get(device_id=2)
+        SensorData.objects.create(
+            device = device,
+            moisture_level=avg_moisture,
+            temperature=avg_temp,
+            nitrogen=avg_n,
+            phosphorous=avg_p,
+            potassium=avg_k,
+            farm_uuid= "3",
+        )
+        print('data saved')
+    except Device.DoesNotExist:
+        print("Device with the given unique_id not found.")
+    return
+    
 
 
 
 
 from celery import shared_task
 
-@shared_task
-def periodic_fetch_and_store(device_id, farm_uuid=None):
-    fetch_and_store_sensor_data(device_id, farm_uuid)
+@shared_task(name="app.services.periodicFetch.fetch_and_store_sensor_data")
+def periodic_fetch_and_store():
+    fetch_and_store_sensor_data()
 

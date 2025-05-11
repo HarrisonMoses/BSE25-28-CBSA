@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': config("DB_NAME"),
         'USER': config("DB_USER"),
         'PASSWORD': config("DB_PASSWORD"),
-        'HOST': config("DB_HOST"),
+        'HOST': config("WSL_HOST"),
         'PORT': config("DB_PORT"),
     }
 }
@@ -158,8 +158,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Soil Monitoring API',
     'DESCRIPTION': 'Cloud based soil monitoring system',
     'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
+    'SERVE_INCLUDE_SCHEMA': False, 
 }
 
 SIMPLE_JWT = {
@@ -217,7 +216,12 @@ CELERY_BEAT_SCHEDULE = {
     'farm_monitor': {
         'task': 'app.services.advisors.monitor_all_farms',
         'args': (),
-        'schedule':5,# every Monday at 1 AM
+        'schedule': crontab(minute="*/5"),# every Monday at 1 AM
+    },
+    'fetch_sensor_data': {
+        'task': 'app.services.periodicFetch.fetch_and_store_sensor_data',
+        'args': (),
+        'schedule': 10,  # every 5 minutes
     },
 }
 
@@ -229,16 +233,34 @@ OPENAI_API_KEY = config("OPENAI_API_KEY")
 LOGGING = {
     'version': 1,
     'handlers': {
+        'console':{
+            
+            'class': 'logging.StreamHandler',
+        },
         'file': {
-            'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'celery_tasks.log',
+            'filename': 'general.log',
+        },
+        'celery-tasks': {
+            'class': 'logging.FileHandler',
+            'filename': 'farm-monitor.log',
         },
     },
     'loggers': {
+        '': {
+            'handlers': ['file', 'console'],
+            'level': os.environ.get('DJANGO_LOG_LEVEL', 'INFO'),
+        },
         'app.services': {
-            'handlers': ['file'],
+            'handlers': ['celery-tasks'],
             'level': 'DEBUG',
         },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} ({levelname})-{name}-{message}',
+            'style': '{',
+        },
+        
     },
 }

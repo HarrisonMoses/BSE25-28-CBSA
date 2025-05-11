@@ -66,7 +66,7 @@ class FarmMonitoringAgent:
             user=self.farm.farmer.user,
             title=alert.get('alert'),
             message=alert.get('description'),
-            recommendation=alert.get('recommendation'),
+            recommendation = alert.get('recommendation'),
             notification_type=Notification.NotificationType.FARM_ALERT,
             priority=alert.get('severity'),
             farm=self.farm

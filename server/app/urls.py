@@ -8,7 +8,7 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register('farmer', FarmerViewSet, basename='farmer')
-router.register('device', DevicesViewSet, basename='device')
+router.register('devices', DevicesViewSet, basename='device')
 router.register('farms', FarmViewSet, basename='farms')
 router.register('notification', UserNotificationView, basename='notification')
 router.register('crop', CropViewSet, basename='crop')
@@ -26,7 +26,7 @@ farmer_router =routers.NestedDefaultRouter(router, 'farmer', lookup='farmer')
 farm_router.register('farms',FarmViewSet, basename='create-farm')
 
 # Devices Nested routes:
-device_router = routers.NestedDefaultRouter(router, 'device', lookup='device')
+device_router = routers.NestedDefaultRouter(router, 'devices', lookup='devices')
 device_router.register("data", SensorDataViewSet, basename='device-sensor-data')
 
 
