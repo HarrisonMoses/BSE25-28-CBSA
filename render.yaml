@@ -26,6 +26,8 @@ services:
           property: connectionString
       - key: OPENAI_API_KEY
         value: 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
+      - key: DJANGO_SETTINGS_MODULE
+        value: server.settings.prod
 
   # 2. Celery Worker
   - type: worker
