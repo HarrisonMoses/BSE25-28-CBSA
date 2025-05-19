@@ -193,8 +193,7 @@ EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = "admin@localhost"
 
-
-CELERY_BROKER_URL = os.environ['REDIS_URL'] + '/0'
+  # Use database 0 for Celery
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULE = {
     

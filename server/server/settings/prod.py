@@ -1,6 +1,8 @@
 from .base import *
 import dj_database_url
 
+DEBUG = False
+
 ALLOWED_HOSTS = []  
 
 CORS_ALLOWED_ORIGINS = []
@@ -26,4 +28,6 @@ CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
 if CUSTOM_DOMAIN:
     ALLOWED_HOSTS.append(CUSTOM_DOMAIN)
 
-CELERY_BROKER_URL = os.environ['REDIS_URL'] + '/0'  # Use database 0 for Celery
+
+redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = redis_url  # Use database 0 for Celery

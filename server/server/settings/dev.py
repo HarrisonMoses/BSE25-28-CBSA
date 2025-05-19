@@ -2,6 +2,8 @@ from .base import *
 
 DEBUG = config("DEBUG", default=True, cast=bool)
 
+redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = redis_url 
 
 
 DATABASES = {
