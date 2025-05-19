@@ -4,9 +4,7 @@ services:
     name: server
     runtime: python
     buildCommand: |
-      cd server
-      pip install -r requirements.txt
-      python manage.py collectstatic --noinput
+      cd server && pip install -r requirements.txt
     startCommand: gunicorn server.wsgi:application
     envVars:
       - key: DATABASE_URL
