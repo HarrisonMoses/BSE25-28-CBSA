@@ -200,12 +200,12 @@ CELERY_BEAT_SCHEDULE = {
     'farm_monitor': {
         'task': 'app.services.advisors.monitor_all_farms',
         'args': (),
-        'schedule': crontab(minute="*/5"),# every Monday at 1 AM
+        'schedule': crontab(minute="*/60"),# every Monday at 1 AM
     },
     'fetch_sensor_data': {
         'task': 'app.services.periodicFetch.fetch_and_store_sensor_data',
         'args': (),
-        'schedule': 10,  # every 5 minutes
+        'schedule': crontab(minute='*/60'),  # every 5 minutes
     },
 }
 
