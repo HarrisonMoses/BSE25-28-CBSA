@@ -45,7 +45,7 @@ def fetch_and_store_sensor_data():
     # print(f"Avg Moisture: {avg_moisture}, Avg Temp: {avg_temp}, Avg N: {avg_n}, Avg P: {avg_p}, Avg K: {avg_k}")
     # Create new SensorData record
     try:
-        device = Device.objects.get(device_id=2)
+        device = Device.objects.get(device_id=1)
         SensorData.objects.create(
             device = device,
             moisture_level=avg_moisture,
@@ -53,7 +53,7 @@ def fetch_and_store_sensor_data():
             nitrogen=avg_n,
             phosphorous=avg_p,
             potassium=avg_k,
-            farm_uuid= "3",
+            farm_uuid= "1",
         )
         print('data saved')
     except Device.DoesNotExist:
