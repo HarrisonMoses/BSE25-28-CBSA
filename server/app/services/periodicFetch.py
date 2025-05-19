@@ -2,12 +2,24 @@ import requests
 from datetime import datetime
 from..models import SensorData, Device
 from django.utils.dateparse import parse_datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 def fetch_and_store_sensor_data():
-    print('fetching data')
+
+    """"
+    Fetches sensor data from ThingSpeak API and stores it in the database."""
+    logger.info('fetching data')
+    
     API_URL = "https://api.thingspeak.com/channels/2912443/feeds.json?api_key=7SEG1UOO84U6C6QF&results=10"  
-    response = requests.get(API_URL)
-    data = response.json()
+    try:
+        # fetching data from ThingSpeak API
+        response = requests.get(API_URL)
+        data = response.json()
+    except requests.RequestException as e:
+        logger.critical(f"Error fetching data from API: {e}")
+        return
     
     feeds = data.get("feeds", [])
 
@@ -45,7 +57,13 @@ def fetch_and_store_sensor_data():
     # print(f"Avg Moisture: {avg_moisture}, Avg Temp: {avg_temp}, Avg N: {avg_n}, Avg P: {avg_p}, Avg K: {avg_k}")
     # Create new SensorData record
     try:
-        device = Device.objects.get(device_id=1)
+        logger.info('saving data')
+        try:
+            device = Device.objects.get(device_id=1)
+        except Exception as e:
+            logger.critical(f"Device not found: {e}")
+            return
+        
         SensorData.objects.create(
             device = device,
             moisture_level=avg_moisture,
@@ -55,9 +73,9 @@ def fetch_and_store_sensor_data():
             potassium=avg_k,
             farm_uuid= "1",
         )
-        print('data saved')
-    except Device.DoesNotExist:
-        print("Device with the given unique_id not found.")
+        logger.info('data saved')
+    except Exception as e:
+        logger.critical(f"Error saving sensor data: {e}")
     return
     
 
