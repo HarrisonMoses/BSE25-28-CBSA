@@ -29,5 +29,5 @@ if CUSTOM_DOMAIN:
     ALLOWED_HOSTS.append(CUSTOM_DOMAIN)
 
 
-redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-CELERY_BROKER_URL = redis_url  # Use database 0 for Celery
+redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379')
+CELERY_BROKER_URL = redis_url + '/0'    # Use database 0 for Celery
