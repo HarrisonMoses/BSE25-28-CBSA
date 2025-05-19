@@ -8,8 +8,8 @@ CORS_ALLOWED_ORIGINS = []
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,  # Reuse connections for 10 minutes
-        ssl_require=True   # Enforce SSL in production
+        conn_max_age=600,  
+        ssl_require=True   
     )
 }
 
