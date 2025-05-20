@@ -43,7 +43,7 @@ services:
         fromService:
           name: redis-prod
           type: redis
-          property: connectionString
+          property: internalconnectionString
 
   # 3. Celery Beat (Scheduler)
   - type: worker
@@ -76,5 +76,5 @@ databases:
     user: root_user 
     ipAllowList: [] 
       
-    
+
     

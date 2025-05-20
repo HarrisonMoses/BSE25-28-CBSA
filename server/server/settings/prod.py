@@ -8,7 +8,7 @@ ALLOWED_HOSTS = [
 ]  
 
 CORS_ALLOWED_ORIGINS = [
-    "https://agrsns.com/", 
+    "https://www.agrsns.com/", 
 ]
 
 
