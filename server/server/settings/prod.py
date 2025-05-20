@@ -23,14 +23,6 @@ DATABASES = {
     )
 }
 
-RENDER_FRONTEND_URL = os.environ.get('RENDER_FRONTEND_URL')
-if RENDER_FRONTEND_URL:
-    CORS_ALLOWED_ORIGINS.append(RENDER_FRONTEND_URL)
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
 if CUSTOM_DOMAIN:
@@ -39,3 +31,6 @@ if CUSTOM_DOMAIN:
 
 redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379')
 CELERY_BROKER_URL = redis_url + '/0'    # Use database 0 for Celery
+
+
+CSRF_TRUSTED_ORIGINS = ['https://server-y3rq.onrender.com']
