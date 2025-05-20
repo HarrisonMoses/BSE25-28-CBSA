@@ -7,9 +7,10 @@ ALLOWED_HOSTS = [
     'https://server-y3rq.onrender.com'
 ]  
 
-CORS_ALLOWED_ORIGINS = [
-    "https://agrsns.com/", 
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://agrsns.com/", 
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
