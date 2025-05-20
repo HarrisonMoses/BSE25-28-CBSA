@@ -4,13 +4,13 @@ import dj_database_url
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'https://server-y3rq.onrender.com'
+    'server-y3rq.onrender.com'
 ]  
 
-# CORS_ALLOWED_ORIGINS = [
-#     "https://agrsns.com/", 
-# ]
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://agrsns.com/", 
+]
+
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
