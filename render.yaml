@@ -6,7 +6,8 @@ services:
     buildCommand: |
       cd server && pip install -r requirements.txt
     startCommand: |
-      cd server && gunicorn server.wsgi:application
+      cd server && gunicorn server.wsgi:application --log-file - --log-level debug
+
     envVars:
       - key: DATABASE_URL
         fromDatabase:
